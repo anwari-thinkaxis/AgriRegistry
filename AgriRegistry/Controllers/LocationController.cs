@@ -10,9 +10,9 @@ namespace AgriRegistry.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
-        private readonly ApiContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LocationController(ApiContext context)
+        public LocationController(ApplicationDbContext context)
         {
             _context = context;
         }

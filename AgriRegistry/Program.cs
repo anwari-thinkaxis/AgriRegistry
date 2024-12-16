@@ -1,11 +1,18 @@
 using AgriRegistry.Data;
+using AspNetCore.Identity.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme).AddBearerToken(IdentityConstants.BearerScheme);
+
+builder.Services.AddIdentityCore<FarmManager>().AddEntityFrameworkStores<ApplicationDbContext>().AddApiEndpoints();
+
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApiContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
@@ -64,5 +71,7 @@ app.MapControllers();
 
 // Catch-all route to serve the React app (for SPA navigation)
 app.MapFallbackToFile("index.html");
+
+app.MapIdentityApi<FarmManager>();
 
 app.Run();
