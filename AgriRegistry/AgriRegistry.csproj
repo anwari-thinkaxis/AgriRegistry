@@ -31,8 +31,8 @@
 
   <ItemGroup>
     <Folder Include="client\src\pages\Home\" />
+    <Folder Include="client\src\pages\HelloWorld\" />
     <Folder Include="Services\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,5 +42,17 @@
     <None Include="client\tsconfig.app.json" />
     <None Include="client\tsconfig.node.json" />
   </ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="Build">
+		<!-- Log a message before running the npm build -->
+		<Message Importance="high" Text="Running npm build in the client directory..." />
+
+		<!-- Run the npm build command -->
+		<Exec Command="npm run build --prefix client" />
+
+		<!-- Log a message after the npm build -->
+		<Message Importance="high" Text="npm build completed." />
+	</Target>
+
 
 </Project>
