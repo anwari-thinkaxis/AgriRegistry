@@ -1,4 +1,5 @@
 using AgriRegistry.Data;
+using AgriRegistry.Services;
 using AspNetCore.Identity.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme).AddBearerToken(IdentityConstants.BearerScheme);
 
 builder.Services.AddIdentityCore<FarmManager>().AddEntityFrameworkStores<ApplicationDbContext>().AddApiEndpoints();
+
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -25,6 +28,9 @@ builder.Services.AddCors(options =>
               .AllowCredentials(); // If needed for cookies/authentication
     });
 });
+
+// Transaction
+builder.Services.AddScoped<TransactionServiceExample>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

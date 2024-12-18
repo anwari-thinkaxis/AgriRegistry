@@ -31,7 +31,7 @@ namespace AgriRegistry.Controllers
         }
 
         // READ ALL
-        [HttpGet]
+        [HttpGet("/api/locations")]
         public async Task<IActionResult> GetAll()
         {
             var locations = await _context.Locations.Include(l => l.Farms).ToListAsync();
