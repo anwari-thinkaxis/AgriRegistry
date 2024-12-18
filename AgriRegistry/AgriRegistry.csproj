@@ -31,6 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="client\src\pages\Authentication\Login\" />
+    <Folder Include="client\src\pages\Authentication\Register\" />
     <Folder Include="client\src\pages\Home\" />
     <Folder Include="client\src\pages\HelloWorld\" />
     <Folder Include="Services\" />
