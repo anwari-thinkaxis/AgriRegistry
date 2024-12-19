@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <None Include="Frontend\nuget.config" />
-    <None Include="Frontend\package-lock.json" />
     <None Include="Frontend\package.json" />
     <None Include="Frontend\tsconfig.app.json" />
     <None Include="Frontend\tsconfig.node.json" />
