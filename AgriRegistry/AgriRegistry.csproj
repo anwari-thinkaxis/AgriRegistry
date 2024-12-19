@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="client\nuget.config" />
-    <Content Remove="client\package-lock.json" />
-    <Content Remove="client\package.json" />
-    <Content Remove="client\tsconfig.app.json" />
-    <Content Remove="client\tsconfig.node.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Services\LocationService.js" />
   </ItemGroup>
 
@@ -31,30 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="client\src\pages\Authentication\Login\" />
-    <Folder Include="client\src\pages\Authentication\Register\" />
-    <Folder Include="client\src\pages\Home\" />
-    <Folder Include="client\src\pages\HelloWorld\" />
+    <Folder Include="Frontend\src\pages\Home\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="client\nuget.config" />
-    <None Include="client\package-lock.json" />
-    <None Include="client\package.json" />
-    <None Include="client\tsconfig.app.json" />
-    <None Include="client\tsconfig.node.json" />
+    <None Include="Frontend\nuget.config" />
+    <None Include="Frontend\package-lock.json" />
+    <None Include="Frontend\package.json" />
+    <None Include="Frontend\tsconfig.app.json" />
+    <None Include="Frontend\tsconfig.node.json" />
   </ItemGroup>
-
-	<Target Name="PreBuild" BeforeTargets="Build">
-		<!-- Log a message before running the npm build -->
-		<Message Importance="high" Text="Running npm build in the client directory..." />
-
-		<!-- Run the npm build command -->
-		<Exec Command="npm run build --prefix client" />
-
-		<!-- Log a message after the npm build -->
-		<Message Importance="high" Text="npm build completed." />
-	</Target>
 
 
 </Project>
