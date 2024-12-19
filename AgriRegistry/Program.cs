@@ -1,23 +1,36 @@
 using AgriRegistry.Data;
+using AgriRegistry.Services;
+using AspNetCore.Identity.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme).AddBearerToken(IdentityConstants.BearerScheme);
+
+builder.Services.AddIdentityCore<FarmManager>().AddEntityFrameworkStores<ApplicationDbContext>().AddApiEndpoints();
+
+
+
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApiContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5000") // Allow React app in development (localhost)
+        policy.WithOrigins("http://localhost:5001") // Allow React app in development (localhost)
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials(); // If needed for cookies/authentication
     });
 });
+
+// Transaction
+builder.Services.AddScoped<TransactionServiceExample>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -64,5 +77,7 @@ app.MapControllers();
 
 // Catch-all route to serve the React app (for SPA navigation)
 app.MapFallbackToFile("index.html");
+
+app.MapIdentityApi<FarmManager>();
 
 app.Run();

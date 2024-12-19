@@ -8,11 +8,11 @@ namespace AgriRegistry.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationController : ControllerBase
+    public class LocationsController : ControllerBase
     {
-        private readonly ApiContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LocationController(ApiContext context)
+        public LocationsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -62,7 +62,7 @@ namespace AgriRegistry.Controllers
             if (locationInDb == null)
                 return NotFound();
 
-            locationInDb.Name = updatedLocation.Name;
+            locationInDb.FullAddress = updatedLocation.FullAddress;
             locationInDb.Farms = updatedLocation.Farms;
 
             _context.Entry(locationInDb).State = EntityState.Modified;

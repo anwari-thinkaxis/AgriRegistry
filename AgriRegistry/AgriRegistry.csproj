@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
@@ -30,9 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="client\src\pages\Authentication\Login\" />
+    <Folder Include="client\src\pages\Authentication\Register\" />
     <Folder Include="client\src\pages\Home\" />
-    <Folder Include="Services\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="client\src\pages\HelloWorld\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,5 +44,17 @@
     <None Include="client\tsconfig.app.json" />
     <None Include="client\tsconfig.node.json" />
   </ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="Build">
+		<!-- Log a message before running the npm build -->
+		<Message Importance="high" Text="Running npm build in the client directory..." />
+
+		<!-- Run the npm build command -->
+		<Exec Command="npm run build --prefix client" />
+
+		<!-- Log a message after the npm build -->
+		<Message Importance="high" Text="npm build completed." />
+	</Target>
+
 
 </Project>
