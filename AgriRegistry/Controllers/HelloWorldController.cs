@@ -9,7 +9,7 @@ namespace AgriRegistry.Controllers
         [HttpGet]
         public IActionResult HelloWorld()
         {
-            return Ok("Hello World!");
+            return Ok("Hello World!!");
         }
     }
 }
