@@ -8,11 +8,11 @@ namespace AgriRegistry.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationController : ControllerBase
+    public class LocationsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public LocationController(ApplicationDbContext context)
+        public LocationsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,7 +31,7 @@ namespace AgriRegistry.Controllers
         }
 
         // READ ALL
-        [HttpGet("/api/locations")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var locations = await _context.Locations.Include(l => l.Farms).ToListAsync();
@@ -62,7 +62,7 @@ namespace AgriRegistry.Controllers
             if (locationInDb == null)
                 return NotFound();
 
-            locationInDb.Name = updatedLocation.Name;
+            locationInDb.FullAddress = updatedLocation.FullAddress;
             locationInDb.Farms = updatedLocation.Farms;
 
             _context.Entry(locationInDb).State = EntityState.Modified;

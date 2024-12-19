@@ -23,12 +23,12 @@ namespace AgriRegistry.Services
             try
             {
                 // Step 1: Insert a new Location (do not manually set the Id)
-                var newLocation = new Location { Name = "Farm 4" };  // Let the Id be auto-generated
+                var newLocation = new Location { FullAddress = "Farm 4" };  // Let the Id be auto-generated
                 _context.Locations.Add(newLocation);
                 await _context.SaveChangesAsync();
 
                 // Step 2: Update the Location
-                newLocation.Name = "Updated Farm 4";
+                newLocation.FullAddress = "Updated Farm 4";
                 _context.Locations.Update(newLocation);
                 await _context.SaveChangesAsync();
 
