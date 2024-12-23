@@ -18,7 +18,7 @@ const CreateLocationForm = () => {
         }
 
         try {
-            const newLocation: Partial<Location> = { name: locationName }; // Use Partial to allow incomplete Location object
+            const newLocation: Partial<Location> = { fullAddress: locationName }; // Use Partial to allow incomplete Location object
             await createLocation(newLocation as Location); // Ensure type matches the API function
             setMessage('Location created successfully!');
             setLocationName(''); // Clear input after success
@@ -32,13 +32,13 @@ const CreateLocationForm = () => {
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="locationName">Location Name:</label>
+                    <label htmlFor="locationName">Location Full Address:</label>
                     <input
                         type="text"
                         id="locationName"
                         value={locationName}
                         onChange={(e) => setLocationName(e.target.value)}
-                        placeholder="Enter location name"
+                        placeholder="Enter location Full Address"
                         required
                     />
                 </div>

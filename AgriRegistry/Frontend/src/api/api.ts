@@ -11,7 +11,7 @@ const api = axios.create({
 
 // Axios instance for Identity API (without /api)
 const authApi = axios.create({
-    baseURL: 'https://localhost:5000', // Base URL without /api for Identity
+    baseURL: 'https://localhost:5000/api/auth', // Base URL without /api for Identity
     withCredentials: true, // Include credentials if needed
     headers: {
         'Content-Type': 'application/json',

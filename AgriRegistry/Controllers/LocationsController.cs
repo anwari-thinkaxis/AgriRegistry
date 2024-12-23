@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgriRegistry.Models;
 using AgriRegistry.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgriRegistry.Controllers
 {
@@ -19,6 +20,7 @@ namespace AgriRegistry.Controllers
 
         // CREATE
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Location location)
         {
             if (location == null)

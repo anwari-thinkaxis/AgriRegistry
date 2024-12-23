@@ -19,13 +19,21 @@ const Page = () => {
                 password,
             });
 
-            // Save token to localStorage (or state management library like Redux)
-            localStorage.setItem('token', response.data.access_token);
+            // Ensure token is present in the response
+            const token = response.data?.token;
+            if (token) {
+                // Save token to localStorage
+                localStorage.setItem('token', token);
 
-            // Redirect to a protected route (e.g., Dashboard)
-            navigate('/locations');
+                console.log('Token saved successfully:', token);
+
+                // Redirect to a protected route (e.g., Dashboard or Locations)
+                navigate('/locations');
+            } else {
+                throw new Error('Token not found in response');
+            }
         } catch (err: any) {
-            console.error('Login failed:', err.response?.data);
+            console.error('Login failed:', err.response?.data || err.message);
             setError(err.response?.data?.message || 'Login failed');
         }
     };

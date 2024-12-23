@@ -14,8 +14,24 @@ export const fetchLocations = (): Promise<Location[]> =>
  * @param {Location} data - Location data to create
  * @returns {Promise<Location>} Promise resolving to the created location
  */
-export const createLocation = (data: Location): Promise<Location> =>
-    api.post<Location>('/Locations', data).then((res) => res.data);
+export const createLocation = (data: Location): Promise<Location> => {
+    const token = localStorage.getItem('token');  // Get the JWT token from localStorage (or cookie)
+
+    // If no token, throw an error (you can handle this more gracefully if needed)
+    if (!token) {
+        return Promise.reject(new Error('No token found, please log in.'));
+    }
+
+    // Include the Authorization header with the Bearer token
+    return api
+        .post<Location>('/Locations', data, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Add the token to the header
+            },
+        })
+        .then((res) => res.data);
+};
+
 
 /**
  * Update an existing location

@@ -1,6 +1,8 @@
 export interface Location {
     id: number;
-    name: string;
+    fullAddress: string;
+    kampong?: string;
+    district?: string;
     farms?: Farm[];
 }
 

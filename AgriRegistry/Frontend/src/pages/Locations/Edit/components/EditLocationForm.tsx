@@ -13,7 +13,7 @@ const EditLocationForm = ({ location, onUpdateSuccess }: EditLocationFormProps) 
 
     useEffect(() => {
         if (location) {
-            setLocationName(location.name || ''); // Pre-fill the form with the location's name
+            setLocationName(location.fullAddress || ''); // Pre-fill the form with the location's name
         }
     }, [location]);
 
@@ -28,7 +28,7 @@ const EditLocationForm = ({ location, onUpdateSuccess }: EditLocationFormProps) 
         try {
             const updatedLocation: Location = {
                 ...location,
-                name: locationName,
+                fullAddress: locationName,
             };
 
             await updateLocation(location.id, updatedLocation);
