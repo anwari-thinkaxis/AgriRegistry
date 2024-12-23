@@ -21,15 +21,27 @@ const Header: React.FC = () => {
         }
     }
 
+    const handleSignOut = () => {
+        // Clear the token from localStorage
+        localStorage.removeItem('token');
+        // Redirect to login or home page (adjust URL as needed)
+        window.location.href = '/login';
+    };
+
     return (
         <header>
             <nav>
                 <ul>
                     <li>
                         {decodedToken ? (
-                            <span>
-                                Logged in as {decodedToken.email} ({decodedToken.role})
-                            </span>
+                            <>
+                                <span>
+                                    Logged in as {decodedToken.email} ({decodedToken.role})
+                                </span>
+                                <button onClick={handleSignOut} style={{ marginLeft: '10px' }}>
+                                    Sign Out
+                                </button>
+                            </>
                         ) : (
                             <span>Not logged in</span>
                         )}

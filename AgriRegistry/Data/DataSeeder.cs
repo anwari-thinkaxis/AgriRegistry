@@ -15,6 +15,12 @@ public class DataSeeder
             await roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
+        // Create FarmManager Role
+        if (!await roleManager.RoleExistsAsync("FarmManager"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("FarmManager"));
+        }
+
         // Create an Admin User
         var adminUser = await userManager.FindByEmailAsync("admin@example.com");
         if (adminUser == null)
@@ -29,5 +35,21 @@ public class DataSeeder
             await userManager.CreateAsync(adminUser, "AdminPassword123!");
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+
+        // Create a FarmManager User
+        var farmManagerUser = await userManager.FindByEmailAsync("farmmanager@example.com");
+        if (farmManagerUser == null)
+        {
+            farmManagerUser = new ApplicationUser
+            {
+                UserName = "farmmanager@example.com",
+                Email = "farmmanager@example.com",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(farmManagerUser, "FarmManager123!");
+            await userManager.AddToRoleAsync(farmManagerUser, "FarmManager");
+        }
     }
+
 }
