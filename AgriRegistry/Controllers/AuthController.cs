@@ -38,14 +38,17 @@ public class AuthController : ControllerBase
     private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
     {
         var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
 
-        // Add role claims
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        // Add role claims with a simplified key
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim("role", role)); // Use "role" instead of full URI
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

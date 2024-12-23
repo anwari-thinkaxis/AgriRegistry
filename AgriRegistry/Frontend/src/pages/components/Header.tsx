@@ -14,18 +14,15 @@ const Header: React.FC = () => {
     let decodedToken: DecodedToken | null = null;
     if (token) {
         try {
-            // Decoding the token using jwt_decode directly
-            decodedToken = jwtDecode<DecodedToken>(token); // Type the result explicitly
+            decodedToken = jwtDecode<DecodedToken>(token); 
         } catch (error) {
             console.error('Token decode error:', error);
         }
     }
 
     const handleSignOut = () => {
-        // Clear the token from localStorage
         localStorage.removeItem('token');
-        // Redirect to login or home page (adjust URL as needed)
-        window.location.href = '/login';
+        window.location.href = '/auth/login';
     };
 
     return (
