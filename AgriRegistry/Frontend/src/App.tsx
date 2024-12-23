@@ -8,10 +8,15 @@ import HelloWorldPage from "./pages/HelloWorld/Page";
 import HelloWorldPythonPage from "./pages/HelloWorldPython/Page";
 import ErrorBoundary from './pages/components/ErrorBoundary';
 import PrivateRoute from "./pages/components/PrivateRoute";
+import Header from './pages/components/Header';
 
 function App() {
     return (
         <ErrorBoundary>
+            <h1 className="text-3xl font-bold underline">
+                Hello world!
+            </h1>
+            <Header/>
             <Router>
                 <Routes>
                     <Route path="/auth/login" element={<LoginPage />} />

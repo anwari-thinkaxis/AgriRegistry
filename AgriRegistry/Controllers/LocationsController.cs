@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgriRegistry.Models;
 using AgriRegistry.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgriRegistry.Controllers
 {
@@ -19,6 +20,7 @@ namespace AgriRegistry.Controllers
 
         // CREATE
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Location location)
         {
             if (location == null)
@@ -32,6 +34,8 @@ namespace AgriRegistry.Controllers
 
         // READ ALL
         [HttpGet]
+
+        [Authorize(Roles = "Admin,FarmManager")]
         public async Task<IActionResult> GetAll()
         {
             var locations = await _context.Locations.Include(l => l.Farms).ToListAsync();

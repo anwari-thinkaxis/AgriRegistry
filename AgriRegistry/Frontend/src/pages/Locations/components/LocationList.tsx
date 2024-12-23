@@ -42,8 +42,8 @@ const LocationList = () => {
                 ) : (
                     locations.map((location: Location) => (
                         <li key={location.id}>
-                            <strong>{location.id}</strong> 
-                            <strong>{location.name}</strong>
+                            <strong>{location.id}</strong>
+                            <strong>{location.fullAddress}</strong>
                             {/* Uncomment when edit functionality is added */}
                             {/* <button onClick={() => onEdit(location)}>Edit</button> */}
                             <button onClick={() => handleDeleteLocation(location.id)}>Delete</button>
