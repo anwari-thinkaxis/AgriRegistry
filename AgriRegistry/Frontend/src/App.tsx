@@ -9,7 +9,7 @@ import HelloWorldPage from "./pages/HelloWorld/Page";
 import HelloWorldPythonPage from "./pages/HelloWorldPython/Page";
 import ErrorBoundary from './pages/components/ErrorBoundary';
 import PrivateRoute from "./pages/components/PrivateRoute";
-import { SidebarProvider } from './components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from './components/ui/sidebar';
 import { AppSidebar } from './pages/components/AppSidebar';
 import { Routes, Route } from "react-router";
 
@@ -18,26 +18,29 @@ function App() {
         <ErrorBoundary>
             <SidebarProvider>
                 <AppSidebar />
-                <Routes>
-                    <Route path="/auth/login" element={<LoginPage />} />
-                    <Route path="/auth/register" element={<RegisterPage />} />
+                <main>
+                    <SidebarTrigger />
+                    <Routes>
+                        <Route path="/auth/login" element={<LoginPage />} />
+                        <Route path="/auth/register" element={<RegisterPage />} />
 
-                    {/* Protected Routes */}
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/farms" element={<FarmPage />} />
-                        <Route path="/farms/create" element={<CreateFarmPage />} />
+                        {/* Protected Routes */}
+                        <Route element={<PrivateRoute />}>
+                            <Route path="/farms" element={<FarmPage />} />
+                            <Route path="/farms/create" element={<CreateFarmPage />} />
 
-                        <Route path="/locations" element={<LocationPage />} />
-                        <Route path="/locations/create" element={<CreateLocation />} />
-                        <Route path="/location/edit/:id" element={<EditLocationPage />} />
-                    </Route>
+                            <Route path="/locations" element={<LocationPage />} />
+                            <Route path="/locations/create" element={<CreateLocation />} />
+                            <Route path="/location/edit/:id" element={<EditLocationPage />} />
+                        </Route>
 
-                    <Route path="/HelloWorld" element={<HelloWorldPage />} />
-                    <Route path="/HelloWorldPython" element={<HelloWorldPythonPage />} />
+                        <Route path="/HelloWorld" element={<HelloWorldPage />} />
+                        <Route path="/HelloWorldPython" element={<HelloWorldPythonPage />} />
 
-                    {/* Default Route */}
-                    <Route path="*" element={<div>Page Not Found</div>} />
-                </Routes>
+                        {/* Default Route */}
+                        <Route path="*" element={<div>Page Not Found</div>} />
+                    </Routes>
+                </main>
             </SidebarProvider>
         </ErrorBoundary>
     );
