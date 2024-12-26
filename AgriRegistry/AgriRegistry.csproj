@@ -41,6 +41,7 @@
   <ItemGroup>
     <Folder Include="Frontend\src\lib\" />
     <Folder Include="Frontend\src\pages\Farms\components\" />
+    <Folder Include="Frontend\src\utils\stores\" />
   </ItemGroup>
 
 

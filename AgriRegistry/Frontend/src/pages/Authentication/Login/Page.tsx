@@ -3,12 +3,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../../api/api';
 import { Button } from '../../../components/ui/button';
+import { Label } from '@radix-ui/react-label';
+import { Input } from '../../../components/ui/input';
+import AuthStore from '../../../utils/stores/AuthStore';
 
 const Page = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,7 +28,7 @@ const Page = () => {
             const token = response.data?.token;
             if (token) {
                 // Save token to localStorage
-                localStorage.setItem('token', token);
+                AuthStore.handleSetToken(token);
 
                 console.log('Token saved successfully:', token);
 
@@ -53,15 +57,15 @@ const Page = () => {
             <Button
                 onClick={() => {
                     setEmail("farmmanager@example.com");
-                    setPassword("farmmanager@example.com");
+                    setPassword("FarmManager123!");
                 }}
             >
                 Autofill Farm Manager
             </Button>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Email</label>
-                    <input
+                    <Label>Email</Label>
+                    <Input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -69,8 +73,8 @@ const Page = () => {
                     />
                 </div>
                 <div>
-                    <label>Password</label>
-                    <input
+                    <Label>Password</Label>
+                    <Input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -78,7 +82,7 @@ const Page = () => {
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit">Login</button>
+                <Button type="submit">Login</Button>
             </form>
         </div>
     );

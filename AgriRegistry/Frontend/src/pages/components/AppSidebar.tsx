@@ -14,6 +14,8 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { Button } from "../../components/ui/button";
 import { Separator } from "../../components/ui/separator";
+import AuthStore from "../../utils/stores/AuthStore";
+import { observer } from 'mobx-react-lite';
 
 interface DecodedToken {
     sub: string;  // User ID
@@ -39,20 +41,18 @@ const items = [
     },
 ]
 
-export function AppSidebar() {
-    const token = localStorage.getItem('token');
-
+export const AppSidebar = observer(() => {
     let decodedToken: DecodedToken | null = null;
-    if (token) {
+    if (AuthStore.token) {
         try {
-            decodedToken = jwtDecode<DecodedToken>(token);
+            decodedToken = jwtDecode<DecodedToken>(AuthStore.token);
         } catch (error) {
             console.error('Token decode error:', error);
         }
     }
 
     const handleSignOut = () => {
-        localStorage.removeItem('token');
+        AuthStore.handleClearToken();
         window.location.href = '/auth/login';
     };
 
@@ -89,19 +89,17 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <SidebarMenuButton>
-                    {decodedToken ? (
-                        <p>
-                            Logged in as {decodedToken.email} ({decodedToken.role})
-                        </p>
-                    ) : (
-                        <Button>Not logged in</Button>
-                    )}
-                </SidebarMenuButton>
-                <Button onClick={handleSignOut} className="ml-2">
-                    Sign Out
-                </Button>
+                {AuthStore.token ? (
+                    <p>Logged in as: {decodedToken?.email || "Unknown User"}</p>
+                ) : (
+                    <Button>Not logged in</Button>
+                )}
+                {AuthStore.token && (
+                    <Button onClick={handleSignOut}>
+                        Sign Out
+                    </Button>
+                )}
             </SidebarFooter>
         </Sidebar>
     )
-}
+});

@@ -24,7 +24,7 @@ const Page = () => {
 
     return (
         <div>
-            <h1>Lokaxion</h1>
+            <h1>Locations</h1>
             <h3>Nyehehehe</h3>
             <button onClick={handleDecodeToken}>Decode Token</button>
             <LocationList />
