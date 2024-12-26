@@ -1,10 +1,10 @@
-﻿namespace AgriRegistry.Models
+﻿namespace AgriRegistry.Models;
+public class Farm
 {
-    public class Farm
-    {
-        public int Id { get; set; }
-        public required string Name { get; set; }
-        public int LocationId { get; set; }
-        public Location Location { get; set; }
-    }
+    public int Id { get; set; }
+    public required string Name { get; set; }
+    public int Hectares { get; set; }
+    public int LocationId { get; set; }
+    public Location Location { get; set; }
 }
+

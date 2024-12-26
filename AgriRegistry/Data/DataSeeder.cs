@@ -1,9 +1,31 @@
 ﻿using AgriRegistry.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgriRegistry.Data;
 public class DataSeeder
 {
+    public static async Task SeedDistrict(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(); 
+
+        await dbContext.Database.EnsureCreatedAsync();
+
+        if (!await dbContext.Set<District>().AnyAsync())
+        {
+            var districts = new List<District>
+            {
+                new District { Name = "Brunei Muara" },
+                new District { Name = "Tutong" },
+                new District { Name = "Belait" },
+                new District { Name = "Temburong" }
+            };
+
+            await dbContext.Set<District>().AddRangeAsync(districts);
+            await dbContext.SaveChangesAsync();
+        }
+    }
     public static async Task SeedRolesAndAdminUser(IServiceProvider serviceProvider)
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();

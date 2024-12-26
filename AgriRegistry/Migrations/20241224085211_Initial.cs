@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AgriRegistry.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentity : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,6 @@ namespace AgriRegistry.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Initials = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +56,7 @@ namespace AgriRegistry.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Locations",
+                name: "Districts",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -67,7 +66,7 @@ namespace AgriRegistry.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.PrimaryKey("PK_Districts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,6 +187,28 @@ namespace AgriRegistry.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Locations",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locations_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalSchema: "dbo",
+                        principalTable: "Districts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Farms",
                 schema: "dbo",
                 columns: table => new
@@ -195,6 +216,7 @@ namespace AgriRegistry.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Hectares = table.Column<int>(type: "int", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -260,6 +282,12 @@ namespace AgriRegistry.Migrations
                 schema: "dbo",
                 table: "Farms",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_DistrictId",
+                schema: "dbo",
+                table: "Locations",
+                column: "DistrictId");
         }
 
         /// <inheritdoc />
@@ -299,6 +327,10 @@ namespace AgriRegistry.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Districts",
                 schema: "dbo");
         }
     }

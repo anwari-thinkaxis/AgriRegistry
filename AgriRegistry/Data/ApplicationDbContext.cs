@@ -1,24 +1,27 @@
 ﻿using AgriRegistry.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // IdentityDbContext
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace AgriRegistry.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) 
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder); // Important for Identity to work
-
-            // Customize FarmManager (Identity User) properties
+            base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>();
-
-            // You can still set the default schema for your custom entities (Farms, Locations)
             builder.HasDefaultSchema("dbo");
+
+            builder.Entity<Location>()
+               .HasOne(l => l.District)
+               .WithMany()
+               .HasForeignKey(l => l.DistrictId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
 
-        // Custom DbSets for your application entities
         public DbSet<Location> Locations { get; set; }
         public DbSet<Farm> Farms { get; set; }
+        public DbSet<District> Districts { get; set; }
     }
 }

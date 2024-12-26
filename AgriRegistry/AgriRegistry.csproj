@@ -38,5 +38,10 @@
     <None Include="Frontend\tsconfig.node.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Frontend\src\lib\" />
+    <Folder Include="Frontend\src\pages\Farms\components\" />
+  </ItemGroup>
+
 
 </Project>

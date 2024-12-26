@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from "./pages/Authentication/Login/Page";
 import RegisterPage from "./pages/Authentication/Register/Page";
+import FarmPage from "./pages/Farms/Page";
+import CreateFarmPage from "./pages/Farms/Create/Page";
 import LocationPage from './pages/Locations/Page';
 import CreateLocation from './pages/Locations/Create/Page';
 import EditLocationPage from './pages/Locations/Edit/Page';
@@ -16,7 +18,7 @@ function App() {
             <h1 className="text-3xl font-bold underline">
                 Hello world!
             </h1>
-            <Header/>
+            <Header />
             <Router>
                 <Routes>
                     <Route path="/auth/login" element={<LoginPage />} />
@@ -24,6 +26,9 @@ function App() {
 
                     {/* Protected Routes */}
                     <Route element={<PrivateRoute />}>
+                        <Route path="/farms" element={<FarmPage />} />
+                        <Route path="/farms/create" element={<CreateFarmPage />} />
+
                         <Route path="/locations" element={<LocationPage />} />
                         <Route path="/locations/create" element={<CreateLocation />} />
                         <Route path="/location/edit/:id" element={<EditLocationPage />} />

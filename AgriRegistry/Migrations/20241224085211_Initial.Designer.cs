@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgriRegistry.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241220074541_NewIdentitySetup")]
-    partial class NewIdentitySetup
+    [Migration("20241224085211_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,10 +44,6 @@ namespace AgriRegistry.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Initials")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -95,6 +91,22 @@ namespace AgriRegistry.Migrations
                     b.ToTable("AspNetUsers", "dbo");
                 });
 
+            modelBuilder.Entity("AgriRegistry.Models.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Districts", "dbo");
+                });
+
             modelBuilder.Entity("AgriRegistry.Models.Farm", b =>
                 {
                     b.Property<int>("Id")
@@ -102,6 +114,9 @@ namespace AgriRegistry.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Hectares")
+                        .HasColumnType("int");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
@@ -124,16 +139,15 @@ namespace AgriRegistry.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FullAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Kampong")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
 
                     b.ToTable("Locations", "dbo");
                 });
@@ -280,6 +294,17 @@ namespace AgriRegistry.Migrations
                         .IsRequired();
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("AgriRegistry.Models.Location", b =>
+                {
+                    b.HasOne("AgriRegistry.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("District");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

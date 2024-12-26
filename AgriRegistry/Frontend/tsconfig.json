@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "allowJs": true, // If you need to work with JavaScript files as well (optional)
-    "strict": true, // Enable strict type-checking (optional, but recommended)
-    "skipLibCheck": true // Optional, skips type checking of declaration files for faster compilation
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "files": [],
   "references": [

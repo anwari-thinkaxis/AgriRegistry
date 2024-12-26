@@ -120,6 +120,7 @@ app.MapFallbackToFile("index.html");
 using (var scope = app.Services.CreateScope())
 {
     await DataSeeder.SeedRolesAndAdminUser(scope.ServiceProvider);
+    await DataSeeder.SeedDistrict(scope.ServiceProvider);
 }
 
 app.Run();

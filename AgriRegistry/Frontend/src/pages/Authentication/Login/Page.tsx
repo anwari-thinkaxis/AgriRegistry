@@ -41,6 +41,22 @@ const Page = () => {
     return (
         <div>
             <h2>Login</h2>
+            <button
+                onClick={() => {
+                    setEmail("admin@example.com");
+                    setPassword("AdminPassword123!");
+                }}
+            >
+                Autofill Admin
+            </button>
+            <button
+                onClick={() => {
+                    setEmail("farmmanager@example.com");
+                    setPassword("farmmanager@example.com");
+                }}
+            >
+                Autofill Farm Manager
+            </button>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email</label>
