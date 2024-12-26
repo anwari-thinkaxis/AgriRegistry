@@ -2,6 +2,7 @@
 
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
+import { Separator } from "../../../components/ui/separator";
 
 const Page = () => {
     //const [farmName, setFarmName] = useState<string>('');
@@ -12,11 +13,11 @@ const Page = () => {
     return (
         <div>
             <h5>Add New Farm</h5>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <Separator />
             
             <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" placeholder="Email" />
+                <Label >Farm Name</Label>
+                <Input placeholder="Name" />
             </div>
             
 

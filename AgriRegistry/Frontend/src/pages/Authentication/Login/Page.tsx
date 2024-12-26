@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../../api/api';
+import { Button } from '../../../components/ui/button';
 
 const Page = () => {
     const [email, setEmail] = useState('');
@@ -41,22 +42,22 @@ const Page = () => {
     return (
         <div>
             <h2>Login</h2>
-            <button
+            <Button
                 onClick={() => {
                     setEmail("admin@example.com");
                     setPassword("AdminPassword123!");
                 }}
             >
                 Autofill Admin
-            </button>
-            <button
+            </Button>
+            <Button
                 onClick={() => {
                     setEmail("farmmanager@example.com");
                     setPassword("farmmanager@example.com");
                 }}
             >
                 Autofill Farm Manager
-            </button>
+            </Button>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email</label>
