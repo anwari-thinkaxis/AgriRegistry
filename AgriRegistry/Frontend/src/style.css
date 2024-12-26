@@ -582,8 +582,11 @@ video {
   --chart-5: 27 87% 67%;
 }
 
+/* Apply Work Sans globally */
+
 * {
   border-color: hsl(var(--border));
+  font-family: 'Work Sans', sans-serif;
 }
 
 body {
@@ -592,15 +595,6 @@ body {
   color: hsl(var(--foreground));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  border-color: hsl(var(--border));
-}
-
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
 }
 
 .static {
@@ -735,6 +729,8 @@ body {
     transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
   }
 }
+
+/* Import the Work Sans font from Google Fonts */
 
 .file\:border-0::file-selector-button {
   border-width: 0px;
