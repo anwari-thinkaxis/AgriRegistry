@@ -10,6 +10,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarGroupLabel
 } from "../../components/ui/sidebar";
 import { jwtDecode } from "jwt-decode";
 import { Button } from "../../components/ui/button";
@@ -17,6 +18,7 @@ import { Separator } from "../../components/ui/separator";
 import AuthStore from "../../utils/stores/AuthStore";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 interface DecodedToken {
     sub: string; // User ID
@@ -51,7 +53,9 @@ const adminItems = [
 ];
 
 export const AppSidebar = observer(() => {
+    const navigate = useNavigate();
     let decodedToken: DecodedToken | null = null;
+
     if (AuthStore.token) {
         try {
             decodedToken = jwtDecode<DecodedToken>(AuthStore.token);
@@ -62,13 +66,11 @@ export const AppSidebar = observer(() => {
 
     const handleSignOut = () => {
         AuthStore.handleClearToken();
-        window.location.href = "/auth/login";
+        navigate("/auth/login");
     };
 
-    const items = [
-        ...baseItems,
-        ...(decodedToken?.role === "Admin" ? adminItems : []), // Add adminItems if user is an admin
-    ];
+    const isAdmin = decodedToken?.role === "Admin";
+    const items = isAdmin ? [...baseItems, ...adminItems] : baseItems;
 
     return (
         <Sidebar>
@@ -82,6 +84,9 @@ export const AppSidebar = observer(() => {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu className="gap-4">
+                            <SidebarGroupLabel>
+                                <span>Navigation</span>
+                            </SidebarGroupLabel>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
@@ -104,7 +109,7 @@ export const AppSidebar = observer(() => {
             </SidebarContent>
             <SidebarFooter>
                 {AuthStore.token ? (
-                    <p>Logged in as: {decodedToken?.email || "Unknown User"}</p>
+                    <p>{decodedToken?.email || "Unknown User"}</p>
                 ) : (
                     <Button>Not logged in</Button>
                 )}

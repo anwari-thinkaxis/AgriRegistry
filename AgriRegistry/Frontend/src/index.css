@@ -126,12 +126,12 @@
     }
 
     /* Additional text styles */
-    .body1 {
-        @apply text-lg font-normal leading-relaxed;
+    span {
+        @apply text-sm font-normal leading-relaxed;
     }
 
     .body2 {
-        @apply text-sm font-normal leading-relaxed;
+        @apply text-xs font-normal leading-relaxed;
     }
 }
 
