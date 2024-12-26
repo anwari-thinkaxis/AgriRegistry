@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import EditLocationForm from './components/EditLocationForm';
 import { Location } from '../../../types/TResponse';
 import { fetchLocations } from '../../../api/locationApi';

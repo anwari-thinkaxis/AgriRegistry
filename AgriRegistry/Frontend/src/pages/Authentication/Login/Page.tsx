@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { authApi } from '../../../api/api';
 import { Button } from '../../../components/ui/button';
 import { Label } from '@radix-ui/react-label';
