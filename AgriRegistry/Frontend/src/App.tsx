@@ -18,8 +18,8 @@ function App() {
         <ErrorBoundary>
             <SidebarProvider>
                 <AppSidebar />
-                <main>
-                    <SidebarTrigger />
+                <main className="flex flex-col w-full">
+                    <SidebarTrigger className="sticky top-0" />
                     <Routes>
                         <Route path="/auth/login" element={<LoginPage />} />
                         <Route path="/auth/register" element={<RegisterPage />} />

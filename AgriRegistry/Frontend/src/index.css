@@ -98,31 +98,31 @@
 
     /* Text styles for headings and paragraphs */
     h1 {
-        @apply text-4xl font-bold leading-tight;
+        @apply text-[48px] font-bold leading-tight;
     }
 
     h2 {
-        @apply text-3xl font-semibold leading-snug;
+        @apply text-[40px] font-semibold leading-snug;
     }
 
     h3 {
-        @apply text-2xl font-medium leading-snug;
+        @apply text-[33px] font-medium leading-snug;
     }
 
     h4 {
-        @apply text-xl font-medium leading-relaxed;
+        @apply text-[27px] font-medium leading-relaxed;
     }
 
     h5 {
-        @apply text-lg font-medium leading-relaxed;
+        @apply text-[23px] font-medium leading-relaxed;
     }
 
     h6 {
-        @apply text-base font-medium leading-relaxed;
+        @apply text-[19px] font-medium leading-relaxed;
     }
 
     p {
-        @apply text-base font-normal leading-loose;
+        @apply text-[16px] font-normal leading-loose;
     }
 
     /* Additional text styles */

@@ -30,8 +30,6 @@ const Page = () => {
                 // Save token to localStorage
                 AuthStore.handleSetToken(token);
 
-                console.log('Token saved successfully:', token);
-
                 // Redirect to a protected route (e.g., Dashboard or Locations)
                 navigate('/locations');
             } else {
