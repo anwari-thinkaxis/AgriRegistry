@@ -12,9 +12,6 @@ namespace AgriRegistry.Models
 
         // Optional navigation property, make it nullable
         public District? District { get; set; }
-
-        // Prevent circular references, initialized to an empty list to avoid null
-        [JsonIgnore]
         public List<Farm> Farms { get; set; } = new List<Farm>();
     }
 }

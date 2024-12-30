@@ -33,13 +33,13 @@ public class LocationsController : ControllerBase
 
     // READ ALL
     [HttpGet]
-
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
         var locations = await _context.Locations.Include(l => l.Farms).ToListAsync();
         return Ok(locations);
     }
+
 
     // READ BY ID
     [HttpGet("{id:int}")]
