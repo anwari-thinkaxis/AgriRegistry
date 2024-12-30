@@ -30,37 +30,71 @@ import {
     CardHeader,
     CardTitle,
 } from "../../../components/ui/card";
+import { api } from "../../../api/api";
+import { useNavigate } from "react-router";
+import AuthStore from "../../../utils/stores/AuthStore";
+import { Textarea } from "../../../components/ui/textarea";
 
 const DISTRICT = { 1: "Brunei Muara", 2: "Tutong", 3: "Belait", 4: "Temburong" };
 
 const formSchema = z.object({
-    farmname: z
+    farmName: z
         .string()
         .min(3, "Farm name must be at least 3 characters long.")
         .max(50, "Farm name must not exceed 50 characters.")
         .regex(/^[a-zA-Z0-9\s.,'-]+$/, "Farm name contains invalid characters."),
     hectares: z.number().min(0, "Hectares must be a positive number.").optional().default(0),
-    fulladdress: z
+    postalAddress: z
         .string()
-        .min(10, "Full address must be at least 10 characters long.")
+        .min(10, "Postal address must be at least 10 characters long.")
         .optional(),
-    district: z.enum(Object.values(DISTRICT) as [string, ...string[]]).optional().nullable(),
+    //district: z.enum(Object.values(DISTRICT) as [string, ...string[]]).optional().nullable(),
 });
 
 const Page = () => {
+    const navigate = useNavigate();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            farmname: "",
+            farmName: "",
             hectares: 0,
-            fulladdress: "",
-            district: undefined,
+            postalAddress: "",
+            //fulladdress: "",
+            //district: undefined,
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            // Assuming you have an endpoint to submit farm data
+            const response = await api.post('/farm', {
+                name: values.farmName,
+                farmManagerId: AuthStore.getFarmManagerId(),
+                hectares: values.hectares,
+                postalAddress: values.postalAddress,
+                locationId: 2
+                // Uncomment or add additional fields as necessary
+                // fulladdress: values.fulladdress,
+                // district: values.district,
+            });
+            console.log(response)
+
+            // Check response for success confirmation
+            if (response.status === 200 || response.status === 201) {
+                console.log('Farm created successfully:', response.data);
+
+                // Redirect or notify the user of success
+                navigate('/farms'); // Change route to the farm listing or relevant page
+            } else {
+                throw new Error('Unexpected response from the server');
+            }
+        } catch (err: any) {
+            console.error('Farm submission failed:', err.response?.data || err.message);
+        }
     }
+
+
 
     return (
         <Form {...form}>
@@ -74,7 +108,7 @@ const Page = () => {
                     <CardContent className="flex flex-1 flex-col gap-6 ">
                         <FormField
                             control={form.control}
-                            name="farmname"
+                            name="farmName"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Farm Name</FormLabel>
@@ -92,28 +126,15 @@ const Page = () => {
                                 <FormItem>
                                     <FormLabel>Hectares</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="Hectares of farm" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </CardContent>
-                </Card>
-                <Separator />
-                <Card className="flex flex-col md:flex-row mx-auto w-full shadow px-4 py-9 rounded-xl">
-                    <CardHeader className="flex-1 pb-3 md:pb-0">
-                        <CardTitle>Location</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-1 flex-col gap-6 ">
-                        <FormField
-                            control={form.control}
-                            name="fulladdress"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Full Address</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Enter full address" {...field} />
+                                        <Input
+                                            type="number"
+                                            placeholder="Hectares of farm"
+                                            {...field}
+                                            onChange={(e) => {
+                                                // Convert the string value to a number
+                                                field.onChange(e.target.value ? Number(e.target.value) : "");
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -121,29 +142,12 @@ const Page = () => {
                         />
                         <FormField
                             control={form.control}
-                            name="district"
+                            name="postalAddress"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>District</FormLabel>
+                                    <FormLabel>Postal Address</FormLabel>
                                     <FormControl>
-                                        <Select
-                                            onValueChange={(value: any) => field.onChange(value)}
-                                            value={field.value || ""}
-                                        >
-                                            <SelectTrigger className="w-[180px]">
-                                                <SelectValue placeholder="Select a district" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectLabel>Districts</SelectLabel>
-                                                    {Object.values(DISTRICT).map((dist) => (
-                                                        <SelectItem key={dist} value={dist}>
-                                                            {dist}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
+                                        <Textarea placeholder="Enter Postal address" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -156,9 +160,6 @@ const Page = () => {
                     <Button variant="outline">Discard</Button>
                     <Button type="submit">Submit</Button>
                 </div>
-
-
-
             </form>
         </Form>
     );

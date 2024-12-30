@@ -13,6 +13,17 @@ namespace AgriRegistry.Data
             builder.Entity<ApplicationUser>();
             builder.HasDefaultSchema("dbo");
 
+            builder.Entity<Farm>()
+               .HasOne(f => f.FarmManager) // Navigation property
+               .WithMany() // No back-reference in IdentityUser
+               .HasForeignKey(f => f.FarmManagerId) // Foreign key
+               .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
+
+            builder.Entity<Farm>()
+                .HasOne(f => f.Location)
+                .WithMany(l => l.Farms)
+                .HasForeignKey(f => f.LocationId);
+
             builder.Entity<Location>()
                .HasOne(l => l.District)
                .WithMany()

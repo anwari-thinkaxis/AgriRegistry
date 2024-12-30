@@ -4,6 +4,7 @@ using AgriRegistry.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgriRegistry.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241227083501_HectaresToDouble")]
+    partial class HectaresToDouble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,9 +115,6 @@ namespace AgriRegistry.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FarmManagerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("Hectares")
                         .HasColumnType("float");
 
@@ -124,12 +124,7 @@ namespace AgriRegistry.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostalAddress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("FarmManagerId");
 
                     b.HasIndex("LocationId");
 
@@ -292,18 +287,11 @@ namespace AgriRegistry.Migrations
 
             modelBuilder.Entity("AgriRegistry.Models.Farm", b =>
                 {
-                    b.HasOne("AgriRegistry.Models.ApplicationUser", "FarmManager")
-                        .WithMany()
-                        .HasForeignKey("FarmManagerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("AgriRegistry.Models.Location", "Location")
                         .WithMany("Farms")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FarmManager");
 
                     b.Navigation("Location");
                 });

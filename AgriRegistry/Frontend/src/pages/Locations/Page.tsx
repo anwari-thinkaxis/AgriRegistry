@@ -1,21 +1,11 @@
-import { jwtDecode } from 'jwt-decode'; // Correct import
+import AuthStore from "../../utils/stores/AuthStore";
 import LocationList from "./components/LocationList";
 import { useEffect } from 'react';
 
 const Page = () => {
     const handleDecodeToken = () => {
-        console.log("huh")
-        const token = localStorage.getItem("token");
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);
-                console.log("Decoded Token:", decoded);
-            } catch (error) {
-                console.error("Error decoding token:", error);
-            }
-        } else {
-            console.log("No token found in localStorage");
-        }
+        const decoded = AuthStore.decodeToken();
+        console.log("Decoded Token:", decoded);
     };
 
     useEffect(() => {
