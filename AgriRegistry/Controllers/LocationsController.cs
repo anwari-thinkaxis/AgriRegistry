@@ -20,25 +20,52 @@ public class LocationsController : ControllerBase
     // CREATE
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create(Location location)
+    public async Task<IActionResult> Create([FromBody] Location location)
     {
         if (location == null)
             return BadRequest("Location cannot be null");
 
+        // Validate required properties
+        if (string.IsNullOrWhiteSpace(location.FullAddress))
+            return BadRequest("FullAddress is required.");
+
+        if (location.DistrictId <= 0)
+            return BadRequest("A valid DistrictId is required.");
+
+        // Ensure the District exists
+        var districtExists = await _context.Districts.AnyAsync(d => d.Id == location.DistrictId);
+        if (!districtExists)
+            return NotFound($"District with Id {location.DistrictId} does not exist.");
+
+        // Add location to the database
         await _context.Locations.AddAsync(location);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetById), new { id = location.Id }, location);
     }
 
+
     // READ ALL
     [HttpGet]
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
-        var locations = await _context.Locations.Include(l => l.Farms).ToListAsync();
+        var locations = await _context.Locations
+            .Include(l => l.Farms) // Include related Farms
+            .Include(l => l.District) // Include related District
+            .Select(l => new
+            {
+                Id = l.Id,
+                FullAddress = l.FullAddress,
+                DistrictId = l.DistrictId,
+                DistrictName = l.District != null ? l.District.Name : null,
+                Farms = l.Farms.Select(f => new { Id = f.Id, Name = f.Name }).ToList()
+            })
+            .ToListAsync();
+
         return Ok(locations);
     }
+
 
 
     // READ BY ID

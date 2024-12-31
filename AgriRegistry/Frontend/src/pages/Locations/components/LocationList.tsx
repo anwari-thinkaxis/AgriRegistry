@@ -41,9 +41,12 @@ const LocationList = () => {
           <p>No locations available.</p>
         ) : (
           locations.map((location: Location) => (
-            <li key={location.id}>
-              <strong>{location.id}</strong>
-              <strong>{location.fullAddress}</strong>
+            <li key={location.id} className="flex flex-col gap-2">
+              <div>
+                <strong>{location.id}</strong>
+                <strong>{location.fullAddress}</strong>
+                <strong>{location.districtName}</strong>
+              </div>
               {/* Uncomment when edit functionality is added */}
               {/* <button onClick={() => onEdit(location)}>Edit</button> */}
               <button onClick={() => handleDeleteLocation(location.id)}>

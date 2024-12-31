@@ -23,13 +23,6 @@ import {
   DialogTrigger,
 } from "../../../components/ui/dialog";
 
-const DISTRICT = {
-  1: "Brunei Muara",
-  2: "Tutong",
-  3: "Belait",
-  4: "Temburong",
-};
-
 const formSchema = z.object({
   farmName: z
     .string()

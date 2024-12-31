@@ -8,6 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../components/ui/form";
 import { fetchLocations } from "../../../api/locationApi";
 import { Location } from "../../../types/TResponse";
 import { UseFormReturn } from "react-hook-form";
@@ -53,9 +59,15 @@ const LocationCard = ({
       <CardContent className="flex-1 pb-3 md:pb-0">
         <CardTitle>Location</CardTitle>
       </CardContent>
-      <CardContent className="flex flex-1 flex-col gap-6">
+      <CardContent className="flex flex-1 flex-col gap-2">
         <Dialog>
-          <DialogTrigger className="bg-black text-white rounded-lg p-2">
+          <DialogTrigger
+            className={`rounded-lg p-2 ${
+              selectedLocation
+                ? "bg-black text-white border border-black"
+                : "bg-none border border-black text-black"
+            }`}
+          >
             {selectedLocation
               ? `${selectedLocation.fullAddress}`
               : "Choose Location"}
@@ -110,6 +122,17 @@ const LocationCard = ({
             </div>
           </DialogContent>
         </Dialog>
+        <FormField
+          control={form.control}
+          name="locationId"
+          render={({ fieldState }) => (
+            <FormItem>
+              <FormMessage>
+                {fieldState.error?.message} {/* Display validation errors */}
+              </FormMessage>
+            </FormItem>
+          )}
+        />
       </CardContent>
     </Card>
   );

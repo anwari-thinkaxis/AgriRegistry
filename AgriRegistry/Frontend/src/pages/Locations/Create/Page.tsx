@@ -4,12 +4,11 @@
 import CreateLocationForm from "./components/CreateLocationForm";
 
 const CreateLocation = () => {
-    return (
-        <div>
-            <h1>Create Location</h1>
-            <CreateLocationForm />
-        </div>
-    );
+  return (
+    <div>
+      <CreateLocationForm />
+    </div>
+  );
 };
 
 export default CreateLocation;

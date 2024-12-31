@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AgriRegistry.Models;
 using AgriRegistry.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AgriRegistry.Controllers;
 
@@ -19,7 +20,7 @@ public class FarmController : ControllerBase
 
     // Create
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> Create([FromBody] Farm farm)
     {
         if (farm == null)
@@ -48,13 +49,25 @@ public class FarmController : ControllerBase
 
 
     // Read All
-    [HttpGet] // Use GET instead of POST
-    [Authorize(Roles = "Admin, Farm Manager")]
+    [HttpGet]
+    [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
-        var farms = await _context.Farms.ToListAsync();
+        // Get the current user
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        IQueryable<Farm> query = _context.Farms;
+
+        // If the user is a Farm Manager, filter farms by their association
+        if (User.IsInRole("FarmManager"))
+        {
+            query = query.Where(farm => farm.FarmManagerId == userId);
+        }
+
+        var farms = await query.ToListAsync();
         return Ok(farms);
     }
+
 
 
     // Read by ID
