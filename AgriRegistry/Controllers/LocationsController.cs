@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AgriRegistry.Models;
 using AgriRegistry.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AgriRegistry.Controllers;
 
@@ -19,7 +20,7 @@ public class LocationsController : ControllerBase
 
     // CREATE
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> Create([FromBody] Location location)
     {
         if (location == null)
@@ -50,9 +51,22 @@ public class LocationsController : ControllerBase
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
-        var locations = await _context.Locations
+        // Get the current user
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        IQueryable<Location> query = _context.Locations
             .Include(l => l.Farms) // Include related Farms
-            .Include(l => l.District) // Include related District
+            .Include(l => l.District); // Include related District
+
+        // If the user is a Farm Manager, filter locations by associated farms they manage
+        if (User.IsInRole("FarmManager"))
+        {
+            query = query.Where(location =>
+                location.FarmManagerId == userId);
+        }
+
+        // Project the query to return only the required fields
+        var locations = await query
             .Select(l => new
             {
                 Id = l.Id,
@@ -65,6 +79,7 @@ public class LocationsController : ControllerBase
 
         return Ok(locations);
     }
+
 
 
 

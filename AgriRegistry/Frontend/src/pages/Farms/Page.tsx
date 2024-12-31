@@ -1,10 +1,24 @@
+import { useNavigate } from "react-router";
+import { Button } from "../../components/ui/button";
+import { Separator } from "../../components/ui/separator";
 import FarmList from "./components/FarmList";
 
 const Page = () => {
+  const navigation = useNavigate();
+
   return (
-    <div>
-      <h5>My Farms</h5>
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+    <div className="flex flex-col mx-auto min-h-screen w-full max-w-4xl py-14 px-12 gap-11">
+      <div className="flex flex-row justify-between">
+        <h5>My Farms</h5>
+        <Button
+          onClick={() => {
+            navigation("/farms/create");
+          }}
+        >
+          Add new farm
+        </Button>
+      </div>
+      <Separator />
       <FarmList />
     </div>
   );

@@ -1,55 +1,77 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Location } from "../../../types/TResponse";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import { PlusIcon, Tractor } from "lucide-react";
+import { Button } from "../../../components/ui/button";
 import { fetchFarms } from "../../../api/farmApi";
-import { Farm } from "../../../types/TResponse";
 
 const FarmList = () => {
-  const [locations, setFarms] = useState<Farm[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadFarms();
+    loadLocations();
   }, []);
 
-  const loadFarms = async () => {
+  const loadLocations = async () => {
     try {
       setError(null);
       const data = await fetchFarms();
-      setFarms(data);
+      setLocations(data);
     } catch (error) {
       setError("Failed to load locations. Please try again later.");
       console.error("Error fetching locations:", error);
     }
   };
 
-  // const handleDeleteLocation = async (id: number) => {
-  //   try {
-  //     setError(null);
-  //     await deleteFarm(id);
-  //     loadFarms();
-  //   } catch (error) {
-  //     setError("Failed to delete location. Please try again.");
-  //     console.error("Error deleting location:", error);
-  //   }
-  // };
-
   return (
     <div>
-      <h2>Farms</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <ul>
+      <div className="flex flex-col gap-8">
         {locations.length === 0 ? (
           <p>No locations available.</p>
         ) : (
-          locations.map((farm: Farm) => (
-            <li key={farm.id} className="flex flex-row gap-2">
-              <strong>{farm.id}</strong>
-              <strong>{farm.name}</strong>
-              {/* Uncomment when edit functionality is added */}
-              {/* <button onClick={() => onEdit(location)}>Edit</button> */}
-            </li>
+          locations.map((location: Location) => (
+            <Card
+              key={location.id}
+              className="flex flex-col gap-10 px-10 py-10"
+            >
+              <div>
+                <h5>{location.fullAddress}</h5>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {location.farms?.map((farm) => (
+                  <Card
+                    key={farm.id}
+                    className="flex justify-between items-center px-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="flex items-center justify-center w-8 h-8">
+                        <Tractor className="w-full h-full" />
+                      </div>
+                      <CardHeader>
+                        <CardTitle>{farm.name}</CardTitle>
+                        <CardDescription>
+                          {Math.floor(Math.random() * 101)} reports
+                        </CardDescription>
+                      </CardHeader>
+                    </div>
+                    <Button className="flex items-center justify-center w-10 h-10 rounded-full p-0">
+                      <PlusIcon className="w-5 h-5" />
+                    </Button>
+                  </Card>
+                ))}
+              </div>
+              <div className="pb-4"></div>
+            </Card>
           ))
         )}
-      </ul>
+      </div>
     </div>
   );
 };

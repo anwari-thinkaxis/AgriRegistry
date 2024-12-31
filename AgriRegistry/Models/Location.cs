@@ -5,6 +5,7 @@ namespace AgriRegistry.Models
     public class Location
     {
         public int Id { get; set; }
+        public string FarmManagerId { get; set; } = null!; 
 
         // Marking these properties as required
         public required string FullAddress { get; set; }

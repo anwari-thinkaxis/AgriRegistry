@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
+import AuthStore from "../../../../utils/stores/AuthStore";
 
 // Define the schema for form validation
 const formSchema = z.object({
@@ -34,6 +35,7 @@ const formSchema = z.object({
     .min(10, "Full address must be at least 10 characters long.")
     .max(100, "Full address must not exceed 100 characters."),
   districtId: z.number().min(1, "Please select a district."),
+  farmManagerId: z.string(),
 });
 
 const DISTRICT = {
@@ -51,17 +53,20 @@ const Page = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullAddress: "",
-      districtId: 1, // Default to a valid district
+      districtId: 1,
+      farmManagerId: "",
     },
   });
 
   // Handle form submission
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log("submit");
       // Send data to API to create the location
       const response = await api.post("/locations", {
         fullAddress: values.fullAddress,
         districtId: values.districtId,
+        farmManagerId: AuthStore.getFarmManagerId(),
       });
 
       if (response.status === 200 || response.status === 201) {

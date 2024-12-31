@@ -53,22 +53,26 @@ public class FarmController : ControllerBase
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
-        // Get the current user
+        // Get the current user ID
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        IQueryable<Farm> query = _context.Farms;
+        // Build query, filtering if the user is a Farm Manager
+        var locations = await _context.Locations
+            .Include(l => l.Farms)
+            .Include(l => l.District)
+            .Where(l => !User.IsInRole("FarmManager") || l.FarmManagerId == userId)
+            .Select(l => new
+            {
+                l.Id,
+                l.FullAddress,
+                l.DistrictId,
+                DistrictName = l.District.Name,
+                Farms = l.Farms.Select(f => new { f.Id, f.Name }).ToList()
+            })
+            .ToListAsync();
 
-        // If the user is a Farm Manager, filter farms by their association
-        if (User.IsInRole("FarmManager"))
-        {
-            query = query.Where(farm => farm.FarmManagerId == userId);
-        }
-
-        var farms = await query.ToListAsync();
-        return Ok(farms);
+        return Ok(locations);
     }
-
-
 
     // Read by ID
     [HttpGet("{id:int}")]
