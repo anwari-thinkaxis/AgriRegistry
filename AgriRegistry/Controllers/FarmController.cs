@@ -78,11 +78,14 @@ public class FarmController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var farm = await _context.Farms.FirstOrDefaultAsync(l => l.Id == id);
+        var farm = await _context.Farms
+            .Include(f => f.Reports) // Include related reports
+            .FirstOrDefaultAsync(f => f.Id == id);
 
         if (farm == null)
             return NotFound();
 
         return Ok(farm);
     }
+
 }

@@ -6,6 +6,12 @@ export interface Location {
   farms?: Farm[];
 }
 
+export interface Report {
+  id: number;
+  farmId: number;
+  dateSubmitted: string;
+}
+
 export interface Farm {
   id: number;
   farmManagerId: string;
@@ -13,4 +19,5 @@ export interface Farm {
   postalAddress: string;
   hectares: number;
   locationId: number;
+  reports?: Report[];
 }

@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { PlusIcon, Tractor } from "lucide-react";
+import { ChevronRight, PlusIcon, Tractor } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { fetchFarms } from "../../../api/farmApi";
 import { useNavigate } from "react-router";
@@ -71,8 +71,12 @@ const FarmList = () => {
                         </CardDescription>
                       </CardHeader>
                     </div>
-                    <Button className="flex items-center justify-center w-10 h-10 rounded-full p-0">
-                      <PlusIcon className="w-5 h-5" />
+                    <Button
+                      type="button"
+                      onClick={() => navigation(`/farms/${farm.id}`)}
+                      className="flex items-center justify-center w-10 h-10 rounded-full p-0"
+                    >
+                      <ChevronRight className="w-5 h-5" />
                     </Button>
                   </Card>
                 ))}

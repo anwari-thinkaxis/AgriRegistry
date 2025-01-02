@@ -1161,6 +1161,10 @@ span {
   white-space: nowrap;
 }
 
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
@@ -1237,6 +1241,11 @@ span {
 
 .bg-destructive {
   background-color: hsl(var(--destructive));
+}
+
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-200 {
