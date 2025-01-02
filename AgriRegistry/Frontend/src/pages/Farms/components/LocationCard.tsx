@@ -13,6 +13,8 @@ import { fetchLocations } from "../../../api/locationApi";
 import { Location } from "../../../types/TResponse";
 import { UseFormReturn } from "react-hook-form";
 import { useSearchParams } from "react-router";
+import AddFarmStore from "../../../utils/stores/AddFarmStore";
+import { observer } from "mobx-react-lite";
 
 const LocationCard = ({
   form,
@@ -22,14 +24,13 @@ const LocationCard = ({
     hectares: number;
     postalAddress?: string | undefined;
     locationId: number;
+    locationAddress?: string | undefined;
   }>;
 }) => {
   const [searchParams] = useSearchParams();
   const locationId = Number(searchParams.get("locationId")); // Parse locationId as a number
   const [locations, setLocations] = useState<Location[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -42,8 +43,9 @@ const LocationCard = ({
         (location) => location.id === locationId
       );
       if (initialLocation) {
-        setSelectedLocation(initialLocation);
+        AddFarmStore.handleSetSelectedLocation(initialLocation);
         form.setValue("locationId", initialLocation.id); // Update the form field
+        form.setValue("locationAddress", initialLocation.fullAddress);
       }
     }
   }, [locationId, locations, form]); // Run this effect when locationId, locations, or form changes
@@ -60,7 +62,7 @@ const LocationCard = ({
   };
 
   const handleSelectLocation = (location: Location) => {
-    setSelectedLocation(location);
+    AddFarmStore.handleSetSelectedLocation(location);
     form.setValue("locationId", location.id); // Update the form field
   };
 
@@ -73,13 +75,13 @@ const LocationCard = ({
         <Dialog>
           <DialogTrigger
             className={`rounded-lg p-2 ${
-              selectedLocation
+              AddFarmStore.selectedLocation
                 ? "bg-black text-white border border-black"
                 : "bg-none border border-black text-black"
             }`}
           >
-            {selectedLocation
-              ? `${selectedLocation.fullAddress}`
+            {AddFarmStore.selectedLocation
+              ? `${AddFarmStore.selectedLocation.fullAddress}`
               : "Choose Location"}
           </DialogTrigger>
           <DialogContent>
@@ -101,7 +103,7 @@ const LocationCard = ({
                       key={location.id}
                       onClick={() => handleSelectLocation(location)}
                       className={`p-3 cursor-pointer rounded-md hover:bg-gray-100 ${
-                        selectedLocation?.id === location.id
+                        AddFarmStore.selectedLocation?.id === location.id
                           ? "bg-gray-200"
                           : ""
                       }`}
@@ -148,4 +150,4 @@ const LocationCard = ({
   );
 };
 
-export default LocationCard;
+export default observer(LocationCard);

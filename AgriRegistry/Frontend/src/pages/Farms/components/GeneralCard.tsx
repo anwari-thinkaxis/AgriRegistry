@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Card, CardContent, CardTitle } from "../../../components/ui/card";
 import {
   FormControl,
@@ -10,6 +10,9 @@ import {
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
 import { UseFormReturn } from "react-hook-form";
+import { Button } from "../../../components/ui/button";
+import { observer } from "mobx-react-lite";
+import AddFarmStore from "../../../utils/stores/AddFarmStore";
 
 const GeneralCard = ({
   form,
@@ -19,6 +22,7 @@ const GeneralCard = ({
     hectares: number;
     postalAddress?: string | undefined;
     locationId: number;
+    locationAddress?: string;
   }>;
 }) => {
   return (
@@ -68,10 +72,31 @@ const GeneralCard = ({
           name="postalAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Postal Address</FormLabel>
+              <div className="flex justify-between items-center">
+                <FormLabel>Postal Address</FormLabel>
+                {AddFarmStore.selectedLocation !== null && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      form.setValue(
+                        "postalAddress",
+                        AddFarmStore.selectedLocation?.fullAddress
+                      );
+                    }}
+                  >
+                    Use location address
+                  </Button>
+                )}
+              </div>
               <FormControl>
-                <Textarea placeholder="Enter Postal address" {...field} />
+                <Textarea
+                  className="h-20"
+                  placeholder="Enter Postal address"
+                  {...field}
+                />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -81,4 +106,4 @@ const GeneralCard = ({
   );
 };
 
-export default GeneralCard;
+export default observer(GeneralCard);

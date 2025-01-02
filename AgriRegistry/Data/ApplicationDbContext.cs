@@ -29,10 +29,17 @@ namespace AgriRegistry.Data
                .WithMany()
                .HasForeignKey(l => l.DistrictId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Report>()
+                .HasOne<Farm>() // Link to the Farm entity
+                .WithMany(f => f.Reports) // Farm can have many reports
+                .HasForeignKey(r => r.FarmId) // Foreign key in Report
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Location> Locations { get; set; }
         public DbSet<Farm> Farms { get; set; }
+        public DbSet<Report> Reports { get; set; }
         public DbSet<District> Districts { get; set; }
     }
 }

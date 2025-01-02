@@ -39,6 +39,10 @@ const formSchema = z.object({
     .min(10, "Postal address must be at least 10 characters long.")
     .optional(),
   locationId: z.number().min(1),
+  locationAddress: z
+    .string()
+    .min(10, "Postal address must be at least 10 characters long.")
+    .optional(),
 });
 
 const Page = () => {
@@ -51,6 +55,7 @@ const Page = () => {
       hectares: 0,
       postalAddress: "",
       locationId: undefined,
+      locationAddress: "",
     },
   });
 

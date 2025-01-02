@@ -45,7 +45,7 @@ const FarmList = () => {
               className="flex flex-col gap-10 px-10 py-10"
             >
               <div className="flex justify-between">
-                <h5>{location.fullAddress}</h5>
+                <p>{location.fullAddress}</p>
                 <Button
                   onClick={() => {
                     navigation(`/farms/create?locationId=${location.id}`);
