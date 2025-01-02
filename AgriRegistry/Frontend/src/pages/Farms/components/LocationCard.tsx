@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardTitle } from "../../../components/ui/card";
 import {
   Dialog,
@@ -8,15 +8,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../components/ui/form";
+import { FormField, FormItem, FormMessage } from "../../../components/ui/form";
 import { fetchLocations } from "../../../api/locationApi";
 import { Location } from "../../../types/TResponse";
 import { UseFormReturn } from "react-hook-form";
+import { useSearchParams } from "react-router";
 
 const LocationCard = ({
   form,
@@ -28,6 +24,8 @@ const LocationCard = ({
     locationId: number;
   }>;
 }) => {
+  const [searchParams] = useSearchParams();
+  const locationId = Number(searchParams.get("locationId")); // Parse locationId as a number
   const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
@@ -37,6 +35,18 @@ const LocationCard = ({
   useEffect(() => {
     loadLocations();
   }, []);
+
+  useEffect(() => {
+    if (locationId && locations.length > 0) {
+      const initialLocation = locations.find(
+        (location) => location.id === locationId
+      );
+      if (initialLocation) {
+        setSelectedLocation(initialLocation);
+        form.setValue("locationId", initialLocation.id); // Update the form field
+      }
+    }
+  }, [locationId, locations, form]); // Run this effect when locationId, locations, or form changes
 
   const loadLocations = async () => {
     try {

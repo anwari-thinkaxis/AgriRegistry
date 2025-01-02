@@ -9,8 +9,11 @@ import {
 import { PlusIcon, Tractor } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { fetchFarms } from "../../../api/farmApi";
+import { useNavigate } from "react-router";
 
 const FarmList = () => {
+  const navigation = useNavigate();
+
   const [locations, setLocations] = useState<Location[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,8 +44,15 @@ const FarmList = () => {
               key={location.id}
               className="flex flex-col gap-10 px-10 py-10"
             >
-              <div>
+              <div className="flex justify-between">
                 <h5>{location.fullAddress}</h5>
+                <Button
+                  onClick={() => {
+                    navigation(`/farms/create?locationId=${location.id}`);
+                  }}
+                >
+                  Add new farm
+                </Button>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {location.farms?.map((farm) => (

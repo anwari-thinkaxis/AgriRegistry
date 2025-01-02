@@ -12,10 +12,10 @@ const Page = () => {
         <h5>My Farms</h5>
         <Button
           onClick={() => {
-            navigation("/farms/create");
+            navigation("/locations/create");
           }}
         >
-          Add new farm
+          Add new location
         </Button>
       </div>
       <Separator />
