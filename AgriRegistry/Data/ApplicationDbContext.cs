@@ -41,6 +41,12 @@ namespace AgriRegistry.Data
                 .WithMany(r => r.ReportEntries) // Reciprocal relationship
                 .HasForeignKey(re => re.ReportId) // Scalar foreign key
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ReportEntry>()
+                .HasOne(re => re.Produce)
+                .WithOne(p => p.ReportEntry)
+                .HasForeignKey<Produce>(p => p.ReportEntryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Location> Locations { get; set; }
@@ -48,5 +54,6 @@ namespace AgriRegistry.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportEntry> ReportEntries { get; set; }
         public DbSet<District> Districts { get; set; }
+        public DbSet<Produce> Produces { get; set; }
     }
 }

@@ -79,9 +79,11 @@ public class FarmController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var farm = await _context.Farms
-            .Include(f => f.Reports) // Include related reports
-            .ThenInclude(r => r.ReportEntries) // Include report entries for each report
+            .Include(f => f.Reports)
+                .ThenInclude(r => r.ReportEntries)
+                    .ThenInclude(re => re.Produce)
             .FirstOrDefaultAsync(f => f.Id == id);
+
 
         if (farm == null)
             return NotFound();

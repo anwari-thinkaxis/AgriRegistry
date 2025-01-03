@@ -1,0 +1,113 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AgriRegistry.Models;
+using AgriRegistry.Data;
+using Microsoft.AspNetCore.Authorization;
+
+namespace AgriRegistry.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProduceController : ControllerBase
+{
+    private readonly ApplicationDbContext _context;
+
+    public ProduceController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    // Create
+    [HttpPost]
+    [Authorize(Roles = "Admin,FarmManager")]
+    public async Task<IActionResult> Create([FromBody] Produce produce)
+    {
+        if (produce == null)
+        {
+            return BadRequest("Invalid produce data.");
+        }
+
+        // Ensure the related ReportEntry exists
+        var reportEntry = await _context.ReportEntries.FindAsync(produce.ReportEntryId);
+        if (reportEntry == null)
+        {
+            return NotFound($"ReportEntry with ID {produce.ReportEntryId} not found.");
+        }
+
+        _context.Produces.Add(produce);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetById), new { id = produce.Id }, produce);
+    }
+
+    // Read All
+    [HttpGet]
+    [Authorize(Roles = "Admin,FarmManager")]
+    public async Task<IActionResult> GetAll()
+    {
+        var produces = await _context.Produces
+            .Include(p => p.ReportEntry) // Include related ReportEntry data
+            .ToListAsync();
+
+        return Ok(produces);
+    }
+
+    // Read by ID
+    [HttpGet("{id:int}")]
+    [Authorize(Roles = "Admin,FarmManager")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var produce = await _context.Produces
+            .Include(p => p.ReportEntry) // Include related ReportEntry data
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (produce == null)
+        {
+            return NotFound($"Produce with ID {id} not found.");
+        }
+
+        return Ok(produce);
+    }
+
+    // Update
+    [HttpPut("{id:int}")]
+    [Authorize(Roles = "Admin,FarmManager")]
+    public async Task<IActionResult> Update(int id, [FromBody] Produce produce)
+    {
+        if (id != produce.Id)
+        {
+            return BadRequest("Produce ID mismatch.");
+        }
+
+        var existingProduce = await _context.Produces.FindAsync(id);
+        if (existingProduce == null)
+        {
+            return NotFound($"Produce with ID {id} not found.");
+        }
+
+        existingProduce.FullName = produce.FullName;
+        existingProduce.ReportEntryId = produce.ReportEntryId;
+
+        _context.Entry(existingProduce).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    // Delete
+    [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var produce = await _context.Produces.FindAsync(id);
+        if (produce == null)
+        {
+            return NotFound($"Produce with ID {id} not found.");
+        }
+
+        _context.Produces.Remove(produce);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+}

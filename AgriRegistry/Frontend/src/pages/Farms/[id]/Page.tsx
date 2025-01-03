@@ -83,7 +83,9 @@ const Page = () => {
                     <div className="flex gap-4 items-center">
                       <Leaf size={32} />
                       <div>
-                        <CardTitle className="pb-1">Beras Laila</CardTitle>
+                        <CardTitle className="pb-1">
+                          {reportEntry.produce?.fullName || "N/A"}
+                        </CardTitle>
                         <CardDescription>Added by: FarmManager</CardDescription>
                       </div>
                     </div>

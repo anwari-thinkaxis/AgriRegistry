@@ -6,8 +6,15 @@ export interface Location {
   farms?: Farm[];
 }
 
+export interface Produce {
+  id: number;
+  fullName: string;
+  reportEntryId: number;
+}
+
 export interface ReportEntry {
   id: number;
+  produce: Produce;
   reportId: number;
   quantity: number;
 }
