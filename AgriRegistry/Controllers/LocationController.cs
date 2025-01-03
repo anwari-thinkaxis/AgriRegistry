@@ -9,11 +9,11 @@ namespace AgriRegistry.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LocationsController : ControllerBase
+public class LocationController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public LocationsController(ApplicationDbContext context)
+    public LocationController(ApplicationDbContext context)
     {
         _context = context;
     }

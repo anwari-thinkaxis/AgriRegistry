@@ -4,9 +4,10 @@ namespace AgriRegistry.Models;
 
 public class Report
 {
-    public int Id { get; set; }
-    public int FarmId { get; set; }
+    public int Id { get; set; } // Primary key
+    public int FarmId { get; set; } // Foreign key
     [JsonIgnore] // Prevent circular references
-    public Farm? Farm { get; set; } // Nullable, indicating that it may not always be set
+    public Farm? Farm { get; set; } // Navigation property
     public DateTime DateSubmitted { get; set; }
+    public List<ReportEntry> ReportEntries { get; set; } = new List<ReportEntry>();
 }

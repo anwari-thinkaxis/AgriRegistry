@@ -6,10 +6,17 @@ export interface Location {
   farms?: Farm[];
 }
 
+export interface ReportEntry {
+  id: number;
+  reportId: number;
+  quantity: number;
+}
+
 export interface Report {
   id: number;
   farmId: number;
   dateSubmitted: string;
+  reportEntries?: ReportEntry[];
 }
 
 export interface Farm {

@@ -1,10 +1,11 @@
 import { useParams } from "react-router";
 import { fetchFarmById } from "../../../api/farmApi";
 import { useEffect, useState } from "react";
-import { Farm, Report } from "../../../types/TResponse";
+import { Farm, Report, ReportEntry } from "../../../types/TResponse";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
@@ -14,7 +15,7 @@ import {
   DialogHeader,
 } from "../../../components/ui/dialog";
 import { DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
-import { PlusIcon } from "lucide-react";
+import { Leaf, PlusIcon } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Separator } from "../../../components/ui/separator";
 
@@ -73,6 +74,25 @@ const Page = () => {
                 </div>
               </div>
               <Separator />
+              {report.reportEntries?.map((reportEntry: ReportEntry) => (
+                <Card
+                  className="flex items-center justify-between"
+                  key={reportEntry.id}
+                >
+                  <CardHeader>
+                    <div className="flex gap-4 items-center">
+                      <Leaf size={32} />
+                      <div>
+                        <CardTitle className="pb-1">Beras Laila</CardTitle>
+                        <CardDescription>Added by: FarmManager</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{reportEntry.quantity} tonnes</p>
+                  </CardContent>
+                </Card>
+              ))}
             </Card>
           ))}
         </CardContent>

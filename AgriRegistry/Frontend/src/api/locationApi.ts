@@ -1,13 +1,13 @@
 // src/(api)/locationApi.ts
-import { Location } from '../types/TResponse';
-import { api } from './api';
+import { Location } from "../types/TResponse";
+import { api } from "./api";
 
 /**
  * Fetch all locations from the API
  * @returns {Promise<Location[]>} Promise resolving to the list of locations
  */
 export const fetchLocations = (): Promise<Location[]> =>
-    api.get<Location[]>('/Locations').then((res) => res.data);
+  api.get<Location[]>("/Location").then((res) => res.data);
 
 /**
  * Create a new location
@@ -15,23 +15,22 @@ export const fetchLocations = (): Promise<Location[]> =>
  * @returns {Promise<Location>} Promise resolving to the created location
  */
 export const createLocation = (data: Location): Promise<Location> => {
-    const token = localStorage.getItem('token');  // Get the JWT token from localStorage (or cookie)
+  const token = localStorage.getItem("token"); // Get the JWT token from localStorage (or cookie)
 
-    // If no token, throw an error (you can handle this more gracefully if needed)
-    if (!token) {
-        return Promise.reject(new Error('No token found, please log in.'));
-    }
+  // If no token, throw an error (you can handle this more gracefully if needed)
+  if (!token) {
+    return Promise.reject(new Error("No token found, please log in."));
+  }
 
-    // Include the Authorization header with the Bearer token
-    return api
-        .post<Location>('/Locations', data, {
-            headers: {
-                Authorization: `Bearer ${token}`,  // Add the token to the header
-            },
-        })
-        .then((res) => res.data);
+  // Include the Authorization header with the Bearer token
+  return api
+    .post<Location>("/Location", data, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the token to the header
+      },
+    })
+    .then((res) => res.data);
 };
-
 
 /**
  * Update an existing location
@@ -39,8 +38,11 @@ export const createLocation = (data: Location): Promise<Location> => {
  * @param {Location} data - Updated location data
  * @returns {Promise<Location>} Promise resolving to the updated location
  */
-export const updateLocation = (id: number | string, data: Location): Promise<Location> =>
-    api.put<Location>(`/Locations/${id}`, data).then((res) => res.data);
+export const updateLocation = (
+  id: number | string,
+  data: Location
+): Promise<Location> =>
+  api.put<Location>(`/Location/${id}`, data).then((res) => res.data);
 
 /**
  * Delete a location
@@ -48,4 +50,4 @@ export const updateLocation = (id: number | string, data: Location): Promise<Loc
  * @returns {Promise<void>} Promise resolving to a successful deletion
  */
 export const deleteLocation = (id: number | string): Promise<void> =>
-    api.delete<void>(`/Locations/${id}`).then((res) => res.data);
+  api.delete<void>(`/Location/${id}`).then((res) => res.data);

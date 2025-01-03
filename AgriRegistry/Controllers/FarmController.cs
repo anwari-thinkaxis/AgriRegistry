@@ -80,6 +80,7 @@ public class FarmController : ControllerBase
     {
         var farm = await _context.Farms
             .Include(f => f.Reports) // Include related reports
+            .ThenInclude(r => r.ReportEntries) // Include report entries for each report
             .FirstOrDefaultAsync(f => f.Id == id);
 
         if (farm == null)

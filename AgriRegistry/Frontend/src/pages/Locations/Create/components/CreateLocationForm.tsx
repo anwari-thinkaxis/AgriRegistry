@@ -63,7 +63,7 @@ const Page = () => {
     try {
       console.log("submit");
       // Send data to API to create the location
-      const response = await api.post("/locations", {
+      const response = await api.post("/location", {
         fullAddress: values.fullAddress,
         districtId: values.districtId,
         farmManagerId: AuthStore.getFarmManagerId(),

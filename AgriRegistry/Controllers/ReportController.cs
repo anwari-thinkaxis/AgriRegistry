@@ -47,7 +47,7 @@ public class ReportController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var reports = await _context.Reports
-            .Include(r => r.Farm) // Include related farm data
+            .Include(f => f.ReportEntries) // Include related reports
             .ToListAsync();
 
         return Ok(reports);
@@ -59,7 +59,7 @@ public class ReportController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var report = await _context.Reports
-            .Include(r => r.Farm) // Include related farm data
+            .Include(f => f.ReportEntries) // Include related reports
             .FirstOrDefaultAsync(r => r.Id == id);
 
         if (report == null)

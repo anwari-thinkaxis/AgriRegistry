@@ -4,6 +4,7 @@ using AgriRegistry.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgriRegistry.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250103025035_AddReportEntry")]
+    partial class AddReportEntry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,9 +177,14 @@ namespace AgriRegistry.Migrations
                     b.Property<int>("FarmId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FarmId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FarmId");
+
+                    b.HasIndex("FarmId1");
 
                     b.ToTable("Reports", "dbo");
                 });
@@ -189,15 +197,20 @@ namespace AgriRegistry.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
                     b.Property<int>("ReportId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ReportId1")
+                        .HasColumnType("int");
+
+                    b.Property<double>("quantity")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ReportId");
+
+                    b.HasIndex("ReportId1");
 
                     b.ToTable("ReportEntries", "dbo");
                 });
@@ -366,22 +379,30 @@ namespace AgriRegistry.Migrations
 
             modelBuilder.Entity("AgriRegistry.Models.Report", b =>
                 {
-                    b.HasOne("AgriRegistry.Models.Farm", "Farm")
+                    b.HasOne("AgriRegistry.Models.Farm", null)
                         .WithMany("Reports")
                         .HasForeignKey("FarmId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AgriRegistry.Models.Farm", "Farm")
+                        .WithMany()
+                        .HasForeignKey("FarmId1");
 
                     b.Navigation("Farm");
                 });
 
             modelBuilder.Entity("AgriRegistry.Models.ReportEntry", b =>
                 {
-                    b.HasOne("AgriRegistry.Models.Report", "Report")
+                    b.HasOne("AgriRegistry.Models.Report", null)
                         .WithMany("ReportEntries")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AgriRegistry.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId1");
 
                     b.Navigation("Report");
                 });

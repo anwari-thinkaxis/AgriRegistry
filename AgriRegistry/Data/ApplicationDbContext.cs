@@ -31,15 +31,22 @@ namespace AgriRegistry.Data
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Report>()
-                .HasOne<Farm>() // Link to the Farm entity
-                .WithMany(f => f.Reports) // Farm can have many reports
-                .HasForeignKey(r => r.FarmId) // Foreign key in Report
+                .HasOne(r => r.Farm) // Specify navigation property explicitly
+                .WithMany(f => f.Reports) // Reciprocal relationship
+                .HasForeignKey(r => r.FarmId) // Scalar foreign key
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ReportEntry>()
+                .HasOne(re => re.Report) // Specify navigation property explicitly
+                .WithMany(r => r.ReportEntries) // Reciprocal relationship
+                .HasForeignKey(re => re.ReportId) // Scalar foreign key
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Location> Locations { get; set; }
         public DbSet<Farm> Farms { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<ReportEntry> ReportEntries { get; set; }
         public DbSet<District> Districts { get; set; }
     }
 }
