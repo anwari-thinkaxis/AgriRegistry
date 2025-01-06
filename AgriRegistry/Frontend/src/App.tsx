@@ -1,5 +1,7 @@
 import LoginPage from "./pages/Authentication/Login/Page";
 import RegisterPage from "./pages/Authentication/Register/Page";
+
+import ProducePage from "./pages/Produces/Page";
 import FarmPage from "./pages/Farms/Page";
 import CreateFarmPage from "./pages/Farms/Create/Page";
 import FarmDetailsPage from "./pages/Farms/[id]/Page";
@@ -27,6 +29,8 @@ function App() {
 
             {/* Protected Routes */}
             <Route element={<PrivateRoute />}>
+              <Route path="/produces" element={<ProducePage />} />
+
               <Route path="/farms" element={<FarmPage />} />
               <Route path="/farms/create" element={<CreateFarmPage />} />
               <Route path="/farms/:id" element={<FarmDetailsPage />} />

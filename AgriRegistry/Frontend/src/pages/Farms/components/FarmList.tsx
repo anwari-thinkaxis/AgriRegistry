@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { ChevronRight, PlusIcon, Tractor } from "lucide-react";
+import { ChevronRight, Tractor } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { fetchFarms } from "../../../api/farmApi";
 import { useNavigate } from "react-router";

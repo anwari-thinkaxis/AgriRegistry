@@ -44,9 +44,9 @@ namespace AgriRegistry.Data
 
             builder.Entity<ReportEntry>()
                 .HasOne(re => re.Produce)
-                .WithOne(p => p.ReportEntry)
-                .HasForeignKey<Produce>(p => p.ReportEntryId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne()
+                .HasForeignKey<ReportEntry>(re => re.ProduceId)
+                .OnDelete(DeleteBehavior.Restrict); // Optional: Define behavior on delete
 
             builder.Entity<Produce>()
                 .HasOne(p => p.ProduceType)

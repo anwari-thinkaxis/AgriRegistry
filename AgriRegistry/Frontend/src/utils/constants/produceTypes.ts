@@ -1,0 +1,15 @@
+export const PRODUCETYPES = [
+  { id: 1, name: "Broilers", categoryId: "Livestock" },
+  { id: 2, name: "Eggs", categoryId: "Livestock" },
+  { id: 3, name: "Beef - Buffalo & Cattle", categoryId: "Livestock" },
+  { id: 4, name: "Goat & Sheep", categoryId: "Livestock" },
+  { id: 5, name: "Day Old Chicks", categoryId: "Livestock" },
+  { id: 6, name: "Fertilized Eggs", categoryId: "Livestock" },
+  { id: 7, name: "Miscellaneous Livestock", categoryId: "Livestock" },
+  { id: 8, name: "Vegetables", categoryId: "Crops" },
+  { id: 9, name: "Fruits", categoryId: "Crops" },
+  { id: 10, name: "Paddy", categoryId: "Crops" },
+  { id: 11, name: "Miscellaneous Crops", categoryId: "Crops" },
+  { id: 12, name: "Ornamental Plants", categoryId: "Crops" },
+  { id: 13, name: "Cut Flowers", categoryId: "Crops" },
+];

@@ -919,6 +919,10 @@ span {
   min-height: 100svh;
 }
 
+.w-1\/2 {
+  width: 50%;
+}
+
 .w-10 {
   width: 2.5rem;
 }

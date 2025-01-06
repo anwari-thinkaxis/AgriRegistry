@@ -4,6 +4,7 @@ import {
   NotepadText,
   Plus,
   Shield,
+  Bean,
 } from "lucide-react";
 
 import {
@@ -47,6 +48,11 @@ const baseItems = [
     title: "Reports",
     url: "/reports",
     icon: NotepadText,
+  },
+  {
+    title: "Produces",
+    url: "/produces",
+    icon: Bean,
   },
 ];
 

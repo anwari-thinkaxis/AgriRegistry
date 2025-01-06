@@ -27,11 +27,11 @@ public class ProduceController : ControllerBase
             return BadRequest("Invalid produce data.");
         }
 
-        // Ensure the related ReportEntry exists
-        var reportEntry = await _context.ReportEntries.FindAsync(produce.ReportEntryId);
-        if (reportEntry == null)
+        // Ensure the related ProduceType exists
+        var produceTypeExists = await _context.ProduceTypes.AnyAsync(pt => pt.Id == produce.ProduceTypeId);
+        if (!produceTypeExists)
         {
-            return NotFound($"ReportEntry with ID {produce.ReportEntryId} not found.");
+            return NotFound($"ProduceType with ID {produce.ProduceTypeId} not found.");
         }
 
         _context.Produces.Add(produce);
@@ -46,7 +46,7 @@ public class ProduceController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var produces = await _context.Produces
-            .Include(p => p.ReportEntry) // Include related ReportEntry data
+            .Include(p => p.ProduceType) // Include related ProduceType data
             .ToListAsync();
 
         return Ok(produces);
@@ -58,7 +58,7 @@ public class ProduceController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var produce = await _context.Produces
-            .Include(p => p.ReportEntry) // Include related ReportEntry data
+            .Include(p => p.ProduceType) // Include related ProduceType data
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (produce == null)
@@ -85,8 +85,15 @@ public class ProduceController : ControllerBase
             return NotFound($"Produce with ID {id} not found.");
         }
 
+        // Ensure the related ProduceType exists
+        var produceTypeExists = await _context.ProduceTypes.AnyAsync(pt => pt.Id == produce.ProduceTypeId);
+        if (!produceTypeExists)
+        {
+            return NotFound($"ProduceType with ID {produce.ProduceTypeId} not found.");
+        }
+
         existingProduce.FullName = produce.FullName;
-        existingProduce.ReportEntryId = produce.ReportEntryId;
+        existingProduce.ProduceTypeId = produce.ProduceTypeId;
 
         _context.Entry(existingProduce).State = EntityState.Modified;
         await _context.SaveChangesAsync();
