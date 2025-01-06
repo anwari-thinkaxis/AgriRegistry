@@ -47,6 +47,19 @@ namespace AgriRegistry.Data
                 .WithOne(p => p.ReportEntry)
                 .HasForeignKey<Produce>(p => p.ReportEntryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Produce>()
+                .HasOne(p => p.ProduceType)
+                .WithMany() // Allow many-to-one relationship if needed
+                .HasForeignKey(p => p.ProduceTypeId) // Separate FK column
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ProduceType>()
+                .HasOne(pt => pt.ProduceCategory)
+                .WithMany() // Allow many-to-one relationship if needed
+                .HasForeignKey(pt => pt.ProduceCategoryId) // Separate FK column
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         public DbSet<Location> Locations { get; set; }
@@ -55,5 +68,7 @@ namespace AgriRegistry.Data
         public DbSet<ReportEntry> ReportEntries { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Produce> Produces { get; set; }
+        public DbSet<ProduceType> ProduceTypes { get; set; }
+        public DbSet<ProduceCategory> ProduceCategories { get; set; }
     }
 }

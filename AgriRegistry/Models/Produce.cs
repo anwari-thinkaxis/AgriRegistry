@@ -3,9 +3,11 @@
 namespace AgriRegistry.Models;
 public class Produce
 {
-    public int Id { get; set; } // Primary key
+    public int Id { get; set; }
     public string FullName { get; set; } = string.Empty;
-    public int ReportEntryId { get; set; } // Foreign key
+    public int ProduceTypeId { get; set; } // Foreign key
+    public ProduceType ProduceType { get; set; } // Navigation property
+    public int ReportEntryId { get; set; }
     [JsonIgnore]
-    public ReportEntry? ReportEntry { get; set; } // Navigation property
+    public ReportEntry? ReportEntry { get; set; }
 }

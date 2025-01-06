@@ -158,6 +158,7 @@ using (var scope = app.Services.CreateScope())
 {
     await DataSeeder.SeedRolesAndAdminUser(scope.ServiceProvider);
     await DataSeeder.SeedDistrict(scope.ServiceProvider);
+    await DataSeeder.SeedProduceData(scope.ServiceProvider);
 }
 
 app.Run();
