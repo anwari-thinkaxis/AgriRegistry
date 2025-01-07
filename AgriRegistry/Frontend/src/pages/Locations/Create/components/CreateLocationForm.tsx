@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "../../../../components/ui/select";
 import AuthStore from "../../../../utils/stores/AuthStore";
+import { DISTRICTS } from "../../../../utils/constants/DISTRICTS";
 
 // Define the schema for form validation
 const formSchema = z.object({
@@ -37,13 +38,6 @@ const formSchema = z.object({
   districtId: z.number().min(1, "Please select a district."),
   farmManagerId: z.string(),
 });
-
-const DISTRICT = {
-  1: "Brunei Muara",
-  2: "Tutong",
-  3: "Belait",
-  4: "Temburong",
-};
 
 const Page = () => {
   const navigate = useNavigate();
@@ -135,7 +129,7 @@ const Page = () => {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Districts</SelectLabel>
-                {Object.entries(DISTRICT).map(([id, name]) => (
+                {Object.entries(DISTRICTS).map(([id, name]) => (
                   <SelectItem key={id} value={id}>
                     {name}
                   </SelectItem>

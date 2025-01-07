@@ -4,6 +4,7 @@ using AgriRegistry.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgriRegistry.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106093243_AddKeyToReportEntry")]
+    partial class AddKeyToReportEntry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,7 +261,8 @@ namespace AgriRegistry.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProduceId");
+                    b.HasIndex("ProduceId")
+                        .IsUnique();
 
                     b.HasIndex("ReportId");
 
@@ -463,8 +467,8 @@ namespace AgriRegistry.Migrations
             modelBuilder.Entity("AgriRegistry.Models.ReportEntry", b =>
                 {
                     b.HasOne("AgriRegistry.Models.Produce", "Produce")
-                        .WithMany()
-                        .HasForeignKey("ProduceId")
+                        .WithOne()
+                        .HasForeignKey("AgriRegistry.Models.ReportEntry", "ProduceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

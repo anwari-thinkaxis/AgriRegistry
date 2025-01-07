@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AgriRegistry.Models;
 public class ReportEntry
 {
+    [Key]
     public int Id { get; set; } // Primary key
 
     public int ProduceId { get; set; } // Foreign key

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { fetchFarmById } from "../../../api/farmApi";
 import { useEffect, useState } from "react";
 import { Farm, Report, ReportEntry } from "../../../types/TResponse";
@@ -12,6 +12,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,8 +20,10 @@ import {
 import { Leaf, PlusIcon } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Separator } from "../../../components/ui/separator";
+import { DatePickerForm } from "../components/DatePickerForm";
 
 const Page = () => {
+  const navigate = useNavigate();
   const { id } = useParams(); // Access the dynamic :id value
   const [farm, setFarm] = useState<Farm>();
 
@@ -40,66 +43,73 @@ const Page = () => {
   return (
     <div className="flex flex-col mx-auto min-h-screen w-full max-w-4xl py-14 px-12 gap-6">
       <h6>{farm?.name}</h6>
-      <p>{farm?.postalAddress}</p>
-      <Card className="flex flex-col">
-        <CardHeader>
-          <CardTitle>X Reports</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <Dialog>
-            <DialogTrigger className="w-full py-2 flex gap-2 justify-center shadow rounded-3xl bg-emerald-500 text-white">
+      <Separator />
+      <div className="flex flex-col gap-6">
+        <Dialog>
+          <div className="flex justify-between items-center">
+            <CardTitle>X Reports</CardTitle>
+            <DialogTrigger className="px-4 py-2 flex gap-2 justify-center shadow rounded-3xl bg-emerald-500 text-white">
               <PlusIcon />
               Add Report
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Dialog Placeholder</DialogTitle>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-          {farm?.reports?.map((report: Report) => (
-            <Card key={report.id} className="flex flex-col p-6 gap-4">
-              <div className="flex justify-between items-center">
-                <CardTitle>
-                  <h6 className="font-semibold">
-                    {new Date(report.dateSubmitted).toLocaleDateString()}
-                  </h6>
-                </CardTitle>
-                <div className="flex gap-2">
-                  <Button type="button" variant={"outline"}>
-                    Edit
-                  </Button>
-                  <Button type="button" variant={"outline"}>
-                    Delete
-                  </Button>
-                </div>
-              </div>
-              <Separator />
-              {report.reportEntries?.map((reportEntry: ReportEntry) => (
-                <Card
-                  className="flex items-center justify-between"
-                  key={reportEntry.id}
+          </div>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New Report</DialogTitle>
+              <DialogDescription>
+                Once created, you will be redirected to the report details page.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex pt-4">
+              <DatePickerForm farmId={Number(id)} />
+            </div>
+          </DialogContent>
+        </Dialog>
+        {farm?.reports?.map((report: Report) => (
+          <Card key={report.id} className="flex flex-col p-6 gap-4">
+            <div className="flex justify-between items-center">
+              <CardTitle>
+                <h6 className="font-semibold">
+                  {new Date(report.dateSubmitted).toLocaleDateString()}
+                </h6>
+              </CardTitle>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={"outline"}
+                  onClick={() => {
+                    navigate(`/reports/${report.id}`);
+                  }}
                 >
-                  <CardHeader>
-                    <div className="flex gap-4 items-center">
-                      <Leaf size={32} />
-                      <div>
-                        <CardTitle className="pb-1">
-                          {reportEntry.produce?.fullName || "N/A"}
-                        </CardTitle>
-                        <CardDescription>Added by: FarmManager</CardDescription>
-                      </div>
+                  View Report
+                </Button>
+              </div>
+            </div>
+            <Separator />
+            {report.reportEntries?.map((reportEntry: ReportEntry) => (
+              <Card
+                className="flex items-center justify-between"
+                key={reportEntry.id}
+              >
+                <CardHeader>
+                  <div className="flex gap-4 items-center">
+                    <Leaf size={32} />
+                    <div>
+                      <CardTitle className="pb-1">
+                        {reportEntry.produce?.fullName || "N/A"}
+                      </CardTitle>
+                      <CardDescription>Added by: FarmManager</CardDescription>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{reportEntry.quantity} tonnes</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </Card>
-          ))}
-        </CardContent>
-      </Card>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p>{reportEntry.quantity} tonnes</p>
+                </CardContent>
+              </Card>
+            ))}
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };

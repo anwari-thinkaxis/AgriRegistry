@@ -44,9 +44,10 @@ namespace AgriRegistry.Data
 
             builder.Entity<ReportEntry>()
                 .HasOne(re => re.Produce)
-                .WithOne()
-                .HasForeignKey<ReportEntry>(re => re.ProduceId)
-                .OnDelete(DeleteBehavior.Restrict); // Optional: Define behavior on delete
+                .WithMany() // Allow many ReportEntry records to reference the same Produce
+                .HasForeignKey(re => re.ProduceId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deleting Produce if referenced by ReportEntry
+
 
             builder.Entity<Produce>()
                 .HasOne(p => p.ProduceType)
@@ -59,7 +60,6 @@ namespace AgriRegistry.Data
                 .WithMany() // Allow many-to-one relationship if needed
                 .HasForeignKey(pt => pt.ProduceCategoryId) // Separate FK column
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
 
         public DbSet<Location> Locations { get; set; }

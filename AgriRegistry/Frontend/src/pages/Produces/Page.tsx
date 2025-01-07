@@ -1,7 +1,8 @@
-import { PlusIcon } from "lucide-react";
+import { ChevronRight, PlusIcon, Tractor, Trash } from "lucide-react";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
@@ -29,7 +30,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../api/api";
 import { useNavigate } from "react-router";
 import { Input } from "../../components/ui/input";
-import { PRODUCETYPES } from "../../utils/constants/produceTypes";
 import {
   Select,
   SelectContent,
@@ -39,6 +39,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
+import { useEffect, useState } from "react";
+import { Produce } from "../../types/TResponse";
+import { deleteProduce, fetchProduces } from "../../api/produceApi";
+import { PRODUCETYPES } from "../../utils/constants/produceTypes";
 
 const formSchema = z.object({
   produceName: z
@@ -52,6 +56,7 @@ const formSchema = z.object({
 const Page = () => {
   const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +66,7 @@ const Page = () => {
   });
 
   const groupedProduceTypes = PRODUCETYPES.reduce((groups, produce) => {
-    const category = produce.categoryId;
+    const category = produce.category;
     if (!groups[category]) {
       groups[category] = [];
     }
@@ -78,6 +83,8 @@ const Page = () => {
 
       if (response.status === 200 || response.status === 201) {
         navigate("/produces");
+        setOpen(false);
+        loadProduces();
       } else {
         throw new Error("Unexpected response from the server");
       }
@@ -89,6 +96,30 @@ const Page = () => {
     }
   }
 
+  const [produces, setProduces] = useState<Produce[]>([]);
+
+  useEffect(() => {
+    loadProduces();
+  }, []);
+
+  const loadProduces = async () => {
+    try {
+      const data = await fetchProduces();
+      setProduces(data);
+    } catch (error) {
+      console.error("Error fetching produces:", error);
+    }
+  };
+
+  const handleDeleteProduce = async (id: number) => {
+    try {
+      await deleteProduce(id);
+      loadProduces();
+    } catch (error) {
+      console.error("Error deleting location:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col mx-auto min-h-screen w-full max-w-4xl py-14 px-12 gap-6">
       <h6>My Produces</h6>
@@ -98,7 +129,7 @@ const Page = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Form {...form}>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger className="w-full py-2 flex gap-2 justify-center shadow rounded-3xl bg-emerald-500 text-white">
                 <PlusIcon />
                 Add Produce
@@ -179,6 +210,43 @@ const Page = () => {
               </DialogContent>
             </Dialog>
           </Form>
+          <div className="flex flex-col gap-3">
+            {produces?.map((produce) => (
+              <Card
+                key={produce.id}
+                className="flex justify-between items-center px-6"
+              >
+                <div className="flex items-center">
+                  <div className="flex items-center justify-center w-8 h-8">
+                    <Tractor className="w-full h-full" />
+                  </div>
+                  <CardHeader>
+                    <CardTitle>{produce.fullName}</CardTitle>
+                    <CardDescription>
+                      {produce.produceType.name}
+                    </CardDescription>
+                  </CardHeader>
+                </div>
+                <div>
+                  <Button
+                    type="button"
+                    onClick={() => navigate(`/produce/${produce.id}`)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full p-0"
+                  >
+                    <ChevronRight size={5} />
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={() => handleDeleteProduce(produce.id)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full p-0"
+                  >
+                    <Trash size={5} />
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>
