@@ -16,6 +16,7 @@ import PrivateRoute from "./pages/components/PrivateRoute";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./pages/components/AppSidebar";
 import { Routes, Route } from "react-router";
+import { AppNavigationMenu } from "./pages/components/AppNavigationMenu";
 
 function App() {
   return (

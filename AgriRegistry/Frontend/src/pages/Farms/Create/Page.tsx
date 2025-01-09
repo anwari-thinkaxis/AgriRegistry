@@ -126,9 +126,7 @@ const Page = () => {
                     No, Go Back
                   </Button>
                 </DialogClose>
-                <Button onClick={goBack} variant="destructive">
-                  Yes, I am Sure
-                </Button>
+                <Button onClick={goBack}>Yes, I am Sure</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

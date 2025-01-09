@@ -45,11 +45,9 @@ export function DatePickerForm({ farmId }: { farmId: number }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log("submit");
-      console.log(farmId);
       // Send data to API to create the report
       const response = await api.post("/Report", {
-        farmId: 1,
+        farmId: farmId,
         dateSubmitted: new Date(values.reportDate).toISOString(), // Ensure ISO 8601 format
         reportEntries: [],
       });
@@ -65,7 +63,6 @@ export function DatePickerForm({ farmId }: { farmId: number }) {
         "Report submission failed:",
         err.response?.data || err.message
       );
-      console.error(new Date(values.reportDate).toISOString());
     }
 
     toast({

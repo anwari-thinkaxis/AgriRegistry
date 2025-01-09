@@ -1,11 +1,4 @@
-import {
-  LayoutDashboard,
-  Tractor,
-  NotepadText,
-  Plus,
-  Shield,
-  Bean,
-} from "lucide-react";
+import { LayoutDashboard, Tractor, Plus, Shield, Bean } from "lucide-react";
 
 import {
   Sidebar,
@@ -44,11 +37,11 @@ const baseItems = [
     url: "/farms",
     icon: Tractor,
   },
-  {
-    title: "Reports",
-    url: "/reports",
-    icon: NotepadText,
-  },
+  // {
+  //   title: "Reports",
+  //   url: "/reports",
+  //   icon: NotepadText,
+  // },
   {
     title: "Produces",
     url: "/produces",
@@ -85,23 +78,27 @@ export const AppSidebar = observer(() => {
   const items = isAdmin ? [...baseItems, ...adminItems] : baseItems;
 
   return (
-    <Sidebar>
+    <Sidebar className="p-5">
       <SidebarHeader>
-        <SidebarMenuButton>
-          <h4>Agri Registry</h4>
-        </SidebarMenuButton>
+        <h4
+          onClick={() => {
+            navigate("/farms");
+          }}
+          className="cursor-pointer"
+        >
+          Agri Registry
+        </h4>
       </SidebarHeader>
-      <SidebarContent>
+      <div className="flex flex-col justify-center h-10">
         <Separator />
+      </div>
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-4">
-              <SidebarGroupLabel>
-                <span>Navigation</span>
-              </SidebarGroupLabel>
+            <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild size={"lg"}>
                     <Link to={item.url}>
                       <div className="flex items-center justify-center w-6 h-6">
                         <item.icon className="w-full h-full" />
@@ -111,14 +108,11 @@ export const AppSidebar = observer(() => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <Button type="button" className="rounded-3xl">
-                <Plus />
-                <h6>New Report</h6>
-              </Button>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <Separator />
       <SidebarFooter>
         {AuthStore.token ? (
           <p>{decodedToken?.email || "Unknown User"}</p>

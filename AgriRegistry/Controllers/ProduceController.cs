@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AgriRegistry.Models;
 using AgriRegistry.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AgriRegistry.Controllers;
 
@@ -45,12 +46,17 @@ public class ProduceController : ControllerBase
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetAll()
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var produces = await _context.Produces
-            .Include(p => p.ProduceType) // Include related ProduceType data
+            .Include(p => p.ProduceType.ProduceCategory)
+            .Include(p => p.FarmManager)
+            .Where(p => User.IsInRole("Admin") || p.FarmManagerId == userId)
             .ToListAsync();
 
         return Ok(produces);
     }
+
 
     // Read by ID
     [HttpGet("{id:int}")]

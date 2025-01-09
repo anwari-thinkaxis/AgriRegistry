@@ -45,9 +45,6 @@ public class FarmController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = farm.Id }, farm);
     }
 
-
-
-
     // Read All
     [HttpGet]
     [Authorize(Roles = "Admin,FarmManager")]
@@ -56,39 +53,47 @@ public class FarmController : ControllerBase
         // Get the current user ID
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // Build query, filtering if the user is a Farm Manager
+        // Fetch locations with related data
         var locations = await _context.Locations
             .Include(l => l.Farms)
-            .Include(l => l.District)
-            .Where(l => !User.IsInRole("FarmManager") || l.FarmManagerId == userId)
+                .ThenInclude(f => f.Reports) // Include Reports for each farm
+            .Include(l => l.District) // Include District for each location
+            .Where(l => User.IsInRole("Admin") || l.Farms.Any(f => f.FarmManagerId == userId)) // Filter by user role
             .Select(l => new
             {
                 l.Id,
                 l.FullAddress,
                 l.DistrictId,
                 DistrictName = l.District.Name,
-                Farms = l.Farms.Select(f => new { f.Id, f.Name }).ToList()
+                Farms = l.Farms.Select(f => new
+                {
+                    f.Id,
+                    f.Name,
+                    ReportCount = f.Reports.Count // Count reports for each farm
+                }).ToList()
             })
             .ToListAsync();
 
         return Ok(locations);
     }
 
-    // Read by ID
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
+        // Get the current user ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // Query for the specific farm with filtering on reports
         var farm = await _context.Farms
             .Include(f => f.Reports)
                 .ThenInclude(r => r.ReportEntries)
                     .ThenInclude(re => re.Produce)
+            .Where(f => User.IsInRole("Admin") || f.FarmManagerId == userId) // Filter farms
             .FirstOrDefaultAsync(f => f.Id == id);
-
-
-        if (farm == null)
-            return NotFound();
 
         return Ok(farm);
     }
+
 
 }

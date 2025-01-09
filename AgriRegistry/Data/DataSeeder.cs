@@ -5,6 +5,14 @@ using Microsoft.EntityFrameworkCore;
 namespace AgriRegistry.Data;
 public class DataSeeder
 {
+    public static async Task SeedDummyData(IServiceProvider serviceProvider) {
+        using var scope = serviceProvider.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        await dbContext.Database.EnsureCreatedAsync();
+    }
+
     public static async Task SeedDistrict(IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
@@ -115,6 +123,36 @@ public class DataSeeder
 
             await userManager.CreateAsync(farmManagerUser, "FarmManager123!");
             await userManager.AddToRoleAsync(farmManagerUser, "FarmManager");
+        }
+
+        // Create a FarmManager2 User
+        var farmManagerUser2 = await userManager.FindByEmailAsync("farmmanager2@example.com");
+        if (farmManagerUser2 == null)
+        {
+            farmManagerUser2 = new ApplicationUser
+            {
+                UserName = "farmmanager2@example.com",
+                Email = "farmmanager2@example.com",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(farmManagerUser2, "FarmManager123!");
+            await userManager.AddToRoleAsync(farmManagerUser2, "FarmManager");
+        }
+
+        // Create a test user
+        var testUser = await userManager.FindByEmailAsync("testuser@example.com");
+        if (testUser == null)
+        {
+            testUser = new ApplicationUser
+            {
+                UserName = "testUser@example.com",
+                Email = "testUser@example.com",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(testUser, "TestUser123!");
+            await userManager.AddToRoleAsync(testUser, "FarmManager");
         }
     }
 

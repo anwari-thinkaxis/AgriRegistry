@@ -65,7 +65,7 @@ const Page = () => {
 
       if (response.status === 200 || response.status === 201) {
         console.log("Location created successfully:", response.data);
-        navigate("/locations"); // Navigate to the locations page after successful submission
+        navigate("/farms"); // Navigate to the locations page after successful submission
       } else {
         throw new Error("Unexpected response from the server");
       }
@@ -82,7 +82,7 @@ const Page = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     event.preventDefault();
-    navigate("/locations"); // Navigate to the locations page
+    navigate("/farms"); // Navigate to the locations page
   }
 
   return (
@@ -167,9 +167,7 @@ const Page = () => {
                     No, Go Back
                   </Button>
                 </DialogClose>
-                <Button onClick={goBack} variant="destructive">
-                  Yes, I am Sure
-                </Button>
+                <Button onClick={goBack}>Yes, I am Sure</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

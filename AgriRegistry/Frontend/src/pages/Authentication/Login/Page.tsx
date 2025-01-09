@@ -33,7 +33,7 @@ const Page = () => {
         AuthStore.handleSetToken(token);
 
         // Redirect to a protected route (e.g., Dashboard or Locations)
-        navigate("/locations");
+        navigate("/farms");
       } else {
         throw new Error("Token not found in response");
       }
@@ -66,6 +66,22 @@ const Page = () => {
         }}
       >
         Autofill Farm Manager
+      </Button>
+      <Button
+        onClick={() => {
+          setEmail("farmmanager2@example.com");
+          setPassword("FarmManager123!");
+        }}
+      >
+        Autofill Farm Manager 2
+      </Button>
+      <Button
+        onClick={() => {
+          setEmail("testuser@example.com");
+          setPassword("TestUser123!");
+        }}
+      >
+        Autofill Test User
       </Button>
       <form onSubmit={handleSubmit}>
         <div>

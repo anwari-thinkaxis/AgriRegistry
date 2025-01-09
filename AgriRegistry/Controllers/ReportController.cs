@@ -58,8 +58,11 @@ public class ReportController : ControllerBase
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetById(int id)
     {
+        // Fetch the report including related entities
         var report = await _context.Reports
-            .Include(f => f.ReportEntries) // Include related reports
+            .Include(r => r.Farm) // Include the related Farm
+            .Include(r => r.ReportEntries) // Include related ReportEntries
+                .ThenInclude(re => re.Produce) // Include Produce related to ReportEntries
             .FirstOrDefaultAsync(r => r.Id == id);
 
         if (report == null)
@@ -67,6 +70,8 @@ public class ReportController : ControllerBase
             return NotFound($"Report with ID {id} not found.");
         }
 
-        return Ok(report);
+        return Ok(report); // Return the full report object
     }
+
+
 }

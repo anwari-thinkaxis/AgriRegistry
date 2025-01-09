@@ -50,18 +50,20 @@ const GeneralCard = ({
             <FormItem>
               <FormLabel>Hectares</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  placeholder="Hectares of farm"
-                  {...field}
-                  onChange={(e) => {
-                    // Convert the string value to a number
-                    field.onChange(
-                      e.target.value ? Number(e.target.value) : ""
-                    );
-                  }}
-                />
+                <div className="flex items-center">
+                  <Input
+                    type="number"
+                    placeholder="Enter field size (hectares)"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value) || "");
+                    }}
+                    className="w-24 mr-2" // Adjust the width and margin here
+                  />
+                  <span className="text-sm text-gray-600">hectares</span>
+                </div>
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -73,20 +75,18 @@ const GeneralCard = ({
             <FormItem>
               <div className="flex justify-between items-center">
                 <FormLabel>Postal Address</FormLabel>
-                {AddFarmStore.selectedLocation !== null && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      form.setValue(
-                        "postalAddress",
-                        AddFarmStore.selectedLocation?.fullAddress
-                      );
-                    }}
-                  >
-                    Use location address
-                  </Button>
-                )}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    form.setValue(
+                      "postalAddress",
+                      AddFarmStore.selectedLocation?.fullAddress
+                    );
+                  }}
+                >
+                  Use location address
+                </Button>
               </div>
               <FormControl>
                 <Textarea

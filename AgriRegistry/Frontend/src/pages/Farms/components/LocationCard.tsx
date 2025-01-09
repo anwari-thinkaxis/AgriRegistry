@@ -74,7 +74,7 @@ const LocationCard = ({
       <CardContent className="flex flex-1 flex-col gap-2">
         <Dialog>
           <DialogTrigger
-            className={`rounded-lg p-2 ${
+            className={`rounded-lg px-3 py-2 text-left text-sm ${
               AddFarmStore.selectedLocation
                 ? "bg-black text-white border border-black"
                 : "bg-none border border-black text-black"
@@ -92,7 +92,7 @@ const LocationCard = ({
                 assigned to your form.
               </DialogDescription>
             </DialogHeader>
-            <div className="max-h-60 overflow-y-auto">
+            <div className="max-h-auto overflow-y-auto">
               {error && <p style={{ color: "red" }}>{error}</p>}
               <ul className="divide-y divide-gray-200">
                 {locations.length === 0 ? (

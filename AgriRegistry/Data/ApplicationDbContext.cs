@@ -19,6 +19,8 @@ namespace AgriRegistry.Data
                .HasForeignKey(f => f.FarmManagerId) // Foreign key
                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
 
+            
+
             builder.Entity<Farm>()
                 .HasOne(f => f.Location)
                 .WithMany(l => l.Farms)
@@ -60,6 +62,17 @@ namespace AgriRegistry.Data
                 .WithMany() // Allow many-to-one relationship if needed
                 .HasForeignKey(pt => pt.ProduceCategoryId) // Separate FK column
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Produce>()
+                .HasOne(f => f.FarmManager)
+                .WithMany()
+                .HasForeignKey(f => f.FarmManagerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Produce>()
+                .HasIndex(p => new { p.FarmManagerId, p.FullName })
+                .IsUnique();
         }
 
         public DbSet<Location> Locations { get; set; }

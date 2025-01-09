@@ -11,6 +11,7 @@ const Page = () => {
       <div className="flex flex-row justify-between">
         <h5>My Farms</h5>
         <Button
+          variant={"outline"}
           onClick={() => {
             navigation("/locations/create");
           }}
