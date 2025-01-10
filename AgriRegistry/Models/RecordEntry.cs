@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace AgriRegistry.Models;
-public class ReportEntry
+public class RecordEntry
 {
     [Key]
     public int Id { get; set; } // Primary key
@@ -10,9 +10,9 @@ public class ReportEntry
     public int ProduceId { get; set; } // Foreign key
     public Produce? Produce { get; set; } // Navigation property
 
-    public int ReportId { get; set; } // Foreign key
+    public int RecordId { get; set; } // Foreign key
     [JsonIgnore]
-    public Report? Report { get; set; }
+    public Record? Record { get; set; }
 
     public double Quantity { get; set; }
 }

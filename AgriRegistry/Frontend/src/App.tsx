@@ -1,7 +1,7 @@
 import LoginPage from "./pages/Authentication/Login/Page";
 import RegisterPage from "./pages/Authentication/Register/Page";
 
-import ReportDetailsPage from "./pages/Reports/[id]/Page";
+import RecordDetailsPage from "./pages/Records/[id]/Page";
 import ProducePage from "./pages/Produces/Page";
 import FarmPage from "./pages/Farms/Page";
 import CreateFarmPage from "./pages/Farms/Create/Page";
@@ -16,7 +16,6 @@ import PrivateRoute from "./pages/components/PrivateRoute";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./pages/components/AppSidebar";
 import { Routes, Route } from "react-router";
-import { AppNavigationMenu } from "./pages/components/AppNavigationMenu";
 
 function App() {
   return (
@@ -31,7 +30,7 @@ function App() {
 
             {/* Protected Routes */}
             <Route element={<PrivateRoute />}>
-              <Route path="/reports/:id" element={<ReportDetailsPage />} />
+              <Route path="/records/:id" element={<RecordDetailsPage />} />
 
               <Route path="/produces" element={<ProducePage />} />
 

@@ -33,20 +33,20 @@ export interface Produce {
   };
 }
 
-export interface ReportEntry {
+export interface RecordEntry {
   id: number;
   produceId: number;
   produce: Produce;
-  reportId: number;
+  recordId: number;
   quantity: number;
 }
 
-export interface Report {
+export interface Record {
   id: number;
   farmId: number;
   farmName: string;
   dateSubmitted: string;
-  reportEntries?: ReportEntry[];
+  recordEntries?: RecordEntry[];
 }
 
 export interface Farm {
@@ -56,6 +56,6 @@ export interface Farm {
   postalAddress: string;
   hectares: number;
   locationId: number;
-  reports?: Report[];
-  reportCount: number;
+  records?: Record[];
+  recordCount: number;
 }

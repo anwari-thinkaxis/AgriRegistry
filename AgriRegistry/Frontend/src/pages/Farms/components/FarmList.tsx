@@ -60,7 +60,7 @@ const FarmList = () => {
                         <CardHeader>
                           <CardTitle>{farm.name}</CardTitle>
                           <CardDescription>
-                            {farm.reportCount} reports
+                            {farm.recordCount} records
                           </CardDescription>
                         </CardHeader>
                       </div>

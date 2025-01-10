@@ -2,12 +2,12 @@
 
 namespace AgriRegistry.Models;
 
-public class Report
+public class Record
 {
     public int Id { get; set; } // Primary key
     public int FarmId { get; set; } // Foreign key
     [JsonIgnore] // Prevent circular references
     public Farm? Farm { get; set; } // Navigation property
     public DateTime DateSubmitted { get; set; }
-    public List<ReportEntry> ReportEntries { get; set; } = new List<ReportEntry>();
+    public List<RecordEntry> RecordEntries { get; set; } = new List<RecordEntry>();
 }

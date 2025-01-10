@@ -42,7 +42,7 @@ const formSchema = z.object({
     .min(3, "Produce name must be at least 3 characters long.")
     .max(50, "Produce name must not exceed 50 characters.")
     .regex(/^[a-zA-Z0-9\s.,'-]+$/, "Produce name contains invalid characters."),
-  produceTypeId: z.number().min(1).max(13),
+  produceTypeId: z.number().min(1),
   farmManagerId: z
     .string()
     .trim()

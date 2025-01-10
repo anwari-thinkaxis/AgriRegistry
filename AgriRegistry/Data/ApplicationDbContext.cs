@@ -19,8 +19,6 @@ namespace AgriRegistry.Data
                .HasForeignKey(f => f.FarmManagerId) // Foreign key
                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
 
-            
-
             builder.Entity<Farm>()
                 .HasOne(f => f.Location)
                 .WithMany(l => l.Farms)
@@ -32,23 +30,23 @@ namespace AgriRegistry.Data
                .HasForeignKey(l => l.DistrictId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Report>()
+            builder.Entity<Record>()
                 .HasOne(r => r.Farm) // Specify navigation property explicitly
-                .WithMany(f => f.Reports) // Reciprocal relationship
+                .WithMany(f => f.Records) // Reciprocal relationship
                 .HasForeignKey(r => r.FarmId) // Scalar foreign key
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<ReportEntry>()
-                .HasOne(re => re.Report) // Specify navigation property explicitly
-                .WithMany(r => r.ReportEntries) // Reciprocal relationship
-                .HasForeignKey(re => re.ReportId) // Scalar foreign key
+            builder.Entity<RecordEntry>()
+                .HasOne(re => re.Record) // Specify navigation property explicitly
+                .WithMany(r => r.RecordEntries) // Reciprocal relationship
+                .HasForeignKey(re => re.RecordId) // Scalar foreign key
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<ReportEntry>()
+            builder.Entity<RecordEntry>()
                 .HasOne(re => re.Produce)
-                .WithMany() // Allow many ReportEntry records to reference the same Produce
+                .WithMany() // Allow many RecordEntry records to reference the same Produce
                 .HasForeignKey(re => re.ProduceId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent deleting Produce if referenced by ReportEntry
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deleting Produce if referenced by RecordEntry
 
 
             builder.Entity<Produce>()
@@ -77,8 +75,8 @@ namespace AgriRegistry.Data
 
         public DbSet<Location> Locations { get; set; }
         public DbSet<Farm> Farms { get; set; }
-        public DbSet<Report> Reports { get; set; }
-        public DbSet<ReportEntry> ReportEntries { get; set; }
+        public DbSet<Record> Records { get; set; }
+        public DbSet<RecordEntry> RecordEntries { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Produce> Produces { get; set; }
         public DbSet<ProduceType> ProduceTypes { get; set; }

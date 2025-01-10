@@ -31,9 +31,9 @@ public class FarmController : ControllerBase
         {
             _context.Locations.Add(farm.Location);
             await _context.SaveChangesAsync();
-            farm.LocationId = farm.Location.Id; // Set the new LocationId on the farm
+            farm.LocationId = farm.Location.Id;
         }
-        else if (farm.LocationId <= 0) // If no LocationId and no Location is provided, return error
+        else if (farm.LocationId <= 0)
         {
             return BadRequest("A valid Location is required to create a Farm.");
         }
@@ -56,9 +56,9 @@ public class FarmController : ControllerBase
         // Fetch locations with related data
         var locations = await _context.Locations
             .Include(l => l.Farms)
-                .ThenInclude(f => f.Reports) // Include Reports for each farm
-            .Include(l => l.District) // Include District for each location
-            .Where(l => User.IsInRole("Admin") || l.Farms.Any(f => f.FarmManagerId == userId)) // Filter by user role
+                .ThenInclude(f => f.Records) 
+            .Include(l => l.District)
+            .Where(l => User.IsInRole("Admin") || l.Farms.Any(f => f.FarmManagerId == userId))
             .Select(l => new
             {
                 l.Id,
@@ -69,7 +69,7 @@ public class FarmController : ControllerBase
                 {
                     f.Id,
                     f.Name,
-                    ReportCount = f.Reports.Count // Count reports for each farm
+                    RecordCount = f.Records.Count
                 }).ToList()
             })
             .ToListAsync();
@@ -84,10 +84,10 @@ public class FarmController : ControllerBase
         // Get the current user ID
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // Query for the specific farm with filtering on reports
+        // Query for the specific farm with filtering on records
         var farm = await _context.Farms
-            .Include(f => f.Reports)
-                .ThenInclude(r => r.ReportEntries)
+            .Include(f => f.Records)
+                .ThenInclude(r => r.RecordEntries)
                     .ThenInclude(re => re.Produce)
             .Where(f => User.IsInRole("Admin") || f.FarmManagerId == userId) // Filter farms
             .FirstOrDefaultAsync(f => f.Id == id);

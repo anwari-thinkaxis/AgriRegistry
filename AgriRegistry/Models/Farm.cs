@@ -22,5 +22,5 @@ public class Farm
     [JsonIgnore] // Prevent circular references
     public Location? Location { get; set; } // Nullable, indicating that it may not always be set
 
-    public List<Report> Reports { get; set; } = new List<Report>();
+    public List<Record> Records { get; set; } = new List<Record>();
 }

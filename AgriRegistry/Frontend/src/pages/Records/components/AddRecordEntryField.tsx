@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { PRODUCETYPES } from "../../../utils/constants/PRODUCETYPES";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../api/api";
@@ -36,7 +35,7 @@ import AddProduceDialog from "../../Produces/components/AddProduceDialog";
 
 const formSchema = z.object({
   produceId: z.number().min(1, "Please select a valid produce"),
-  reportId: z.number(),
+  recordId: z.number(),
   quantity: z
     .number()
     .min(0.1, "Quantity must be greater than 0")
@@ -45,12 +44,12 @@ const formSchema = z.object({
     }),
 });
 
-const AddReportEntryField = ({
+const AddRecordEntryField = ({
   id,
-  loadReport,
+  loadRecord,
 }: {
   id: number;
-  loadReport: any;
+  loadRecord: any;
 }) => {
   const [produces, setProduces] = useState<Produce[]>([]);
 
@@ -80,24 +79,24 @@ const AddReportEntryField = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       produceId: 1,
-      reportId: id,
+      recordId: id,
       quantity: 0,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Send data to API to create the report
-      const response = await api.post("/ReportEntry", {
+      // Send data to API to create the record
+      const response = await api.post("/RecordEntry", {
         produceId: values.produceId,
-        reportId: values.reportId,
+        recordId: values.recordId,
         quantity: values.quantity,
       });
 
       if (response.status === 200 || response.status === 201) {
         console.log("Entry created successfully:", response.data);
         form.setValue("quantity", 0);
-        loadReport();
+        loadRecord();
       } else {
         throw new Error("Unexpected response from the server");
       }
@@ -114,7 +113,7 @@ const AddReportEntryField = ({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="flex flex-1 flex-col">
           <CardHeader className="font-medium">
-            <CardTitle> Create report entry</CardTitle>
+            <CardTitle> Create record entry</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
@@ -198,4 +197,4 @@ const AddReportEntryField = ({
   );
 };
 
-export default AddReportEntryField;
+export default AddRecordEntryField;

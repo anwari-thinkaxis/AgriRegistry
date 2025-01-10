@@ -1,4 +1,4 @@
-import { LayoutDashboard, Tractor, Plus, Shield, Bean } from "lucide-react";
+import { LayoutDashboard, Tractor, Shield, Bean } from "lucide-react";
 
 import {
   Sidebar,
@@ -10,7 +10,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarGroupLabel,
 } from "../../components/ui/sidebar";
 import { jwtDecode } from "jwt-decode";
 import { Button } from "../../components/ui/button";

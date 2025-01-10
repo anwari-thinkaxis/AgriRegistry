@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { fetchFarmById } from "../../../api/farmApi";
 import { useEffect, useState } from "react";
-import { Farm, Report, ReportEntry } from "../../../types/TResponse";
+import { Farm, Record, RecordEntry } from "../../../types/TResponse";
 import {
   Card,
   CardContent,
@@ -59,17 +59,17 @@ const Page = () => {
         <CardHeader>
           <Dialog>
             <div className="flex justify-between items-center">
-              <CardTitle>{farm?.reports?.length} Reports</CardTitle>
+              <CardTitle>{farm?.records?.length} Records</CardTitle>
               <DialogTrigger className="px-4 py-2 flex gap-2 justify-center shadow rounded-3xl bg-emerald-500 text-white">
                 <PlusIcon />
-                Add Report
+                Add Record
               </DialogTrigger>
             </div>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create New Report</DialogTitle>
+                <DialogTitle>Create New Record</DialogTitle>
                 <DialogDescription>
-                  Once created, you will be redirected to the report details
+                  Once created, you will be redirected to the record details
                   page.
                 </DialogDescription>
               </DialogHeader>
@@ -81,42 +81,42 @@ const Page = () => {
         </CardHeader>
         <CardContent>
           <Accordion type="single" collapsible>
-            {farm?.reports?.map((report: Report, index: number) => (
+            {farm?.records?.map((record: Record, index: number) => (
               <AccordionItem value={`item-${index + 1}`}>
                 <AccordionTrigger>
                   <div className="w-full flex justify-between pl-8">
                     <div>
                       <h6 className="text-sm text-muted-foreground">
-                        Report #{report.id}
+                        Record #{record.id}
                       </h6>
                       <h6>
-                        {new Date(report.dateSubmitted).toLocaleDateString()} -{" "}
-                        {report.reportEntries?.length || 0} Entries
+                        {new Date(record.dateSubmitted).toLocaleDateString()} -{" "}
+                        {record.recordEntries?.length || 0} Entries
                       </h6>
                     </div>
                     <div className="flex gap-2">
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => navigate(`/reports/${report.id}`)}
+                        onClick={() => navigate(`/records/${record.id}`)}
                       >
-                        View Report
+                        View Record
                       </Button>
                     </div>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="flex flex-col gap-4">
-                  {report.reportEntries?.map((reportEntry: ReportEntry) => (
+                  {record.recordEntries?.map((recordEntry: RecordEntry) => (
                     <Card
                       className="flex items-center justify-between"
-                      key={reportEntry.id}
+                      key={recordEntry.id}
                     >
                       <CardHeader>
                         <div className="flex gap-4 items-center">
                           <Leaf size={32} />
                           <div>
                             <CardTitle className="pb-1">
-                              {reportEntry.produce.fullName || "N/A"}
+                              {recordEntry.produce.fullName || "N/A"}
                             </CardTitle>
                             <CardDescription>
                               Added by: {farm.farmManagerId}
@@ -125,7 +125,7 @@ const Page = () => {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p>{reportEntry.quantity} tonnes</p>
+                        <p>{recordEntry.quantity} tonnes</p>
                       </CardContent>
                     </Card>
                   ))}

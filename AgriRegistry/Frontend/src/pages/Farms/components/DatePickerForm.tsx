@@ -28,7 +28,7 @@ import { api } from "../../../api/api";
 import { useNavigate } from "react-router";
 
 const formSchema = z.object({
-  reportDate: z.date({
+  recordDate: z.date({
     required_error: "A date is required.",
   }),
 });
@@ -39,28 +39,28 @@ export function DatePickerForm({ farmId }: { farmId: number }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      reportDate: new Date(), // Default to today's date
+      recordDate: new Date(), // Default to today's date
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Send data to API to create the report
-      const response = await api.post("/Report", {
+      // Send data to API to create the record
+      const response = await api.post("/Record", {
         farmId: farmId,
-        dateSubmitted: new Date(values.reportDate).toISOString(), // Ensure ISO 8601 format
-        reportEntries: [],
+        dateSubmitted: new Date(values.recordDate).toISOString(), // Ensure ISO 8601 format
+        recordEntries: [],
       });
 
       if (response.status === 200 || response.status === 201) {
-        console.log("Report created successfully:", response.data);
-        navigate(`/reports/${response.data.id}`); // Navigate to the locations page after successful submission
+        console.log("Record created successfully:", response.data);
+        navigate(`/records/${response.data.id}`); // Navigate to the locations page after successful submission
       } else {
         throw new Error("Unexpected response from the server");
       }
     } catch (err: any) {
       console.error(
-        "Report submission failed:",
+        "Record submission failed:",
         err.response?.data || err.message
       );
     }
@@ -80,10 +80,10 @@ export function DatePickerForm({ farmId }: { farmId: number }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="reportDate"
+          name="recordDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Report Date</FormLabel>
+              <FormLabel>Record Date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -116,7 +116,7 @@ export function DatePickerForm({ farmId }: { farmId: number }) {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Select the date you want to associate with this report.
+                Select the date you want to associate with this record.
               </FormDescription>
               <FormMessage />
             </FormItem>

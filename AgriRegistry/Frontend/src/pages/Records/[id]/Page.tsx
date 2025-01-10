@@ -1,8 +1,8 @@
 import { useParams } from "react-router";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
 import { useEffect, useState } from "react";
-import { fetchReportById } from "../../../api/reportApi";
-import { Report, ReportEntry } from "../../../types/TResponse";
+import { fetchRecordById } from "../../../api/recordApi";
+import { Record, RecordEntry } from "../../../types/TResponse";
 import {
   Card,
   CardContent,
@@ -10,23 +10,23 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { Leaf } from "lucide-react";
-import AddReportEntryField from "../components/AddReportEntryField";
+import AddRecordEntryField from "../components/AddRecordEntryField";
 
 const Page = () => {
   const { id } = useParams<{ id: string }>();
-  const [report, setReport] = useState<Report | null>(null);
+  const [record, setRecord] = useState<Record | null>(null);
 
   useEffect(() => {
-    if (id) loadReport();
+    if (id) loadRecord();
   }, [id]);
 
-  const loadReport = async () => {
+  const loadRecord = async () => {
     try {
-      const data = await fetchReportById(Number(id));
+      const data = await fetchRecordById(Number(id));
       console.log(data);
-      setReport(data);
+      setRecord(data);
     } catch (error) {
-      console.error("Error fetching report:", error);
+      console.error("Error fetching record:", error);
     }
   };
 
@@ -35,36 +35,36 @@ const Page = () => {
       <CustomBreadcrumb
         items={[
           { name: "Farms", url: "/farms" },
-          { name: report?.farmName || "Farm", url: `/farms/${report?.farmId}` },
-          { name: `Report #${id}`, url: `/reports/${id}` },
+          { name: record?.farmName || "Farm", url: `/farms/${record?.farmId}` },
+          { name: `Record #${id}`, url: `/records/${id}` },
         ]}
       />
       <h5 className="font-semibold">
-        {report?.dateSubmitted &&
-          new Date(report.dateSubmitted).toLocaleDateString()}
+        {record?.dateSubmitted &&
+          new Date(record.dateSubmitted).toLocaleDateString()}
       </h5>
-      <AddReportEntryField id={Number(id)} loadReport={loadReport} />
+      <AddRecordEntryField id={Number(id)} loadRecord={loadRecord} />
       <p>Entries</p>
       <div className="space-y-4">
-        {[...(report?.reportEntries || [])]
+        {[...(record?.recordEntries || [])]
           .reverse()
-          .map((reportEntry: ReportEntry) => (
+          .map((recordEntry: RecordEntry) => (
             <Card
               className="flex items-center justify-between"
-              key={reportEntry.id}
+              key={recordEntry.id}
             >
               <CardHeader>
                 <div className="flex gap-4 items-center">
                   <Leaf size={32} />
                   <div>
                     <CardTitle className="pb-1">
-                      {reportEntry.produce?.fullName || "N/A"}
+                      {recordEntry.produce?.fullName || "N/A"}
                     </CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <p>{reportEntry.quantity} tonnes</p>
+                <p>{recordEntry.quantity} tonnes</p>
               </CardContent>
             </Card>
           ))}
