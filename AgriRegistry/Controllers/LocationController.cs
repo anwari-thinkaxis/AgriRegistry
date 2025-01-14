@@ -96,25 +96,39 @@ public class LocationController : ControllerBase
     }
 
     // UPDATE
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, Location updatedLocation)
+    [HttpPatch("{id:int}")]
+    [Authorize(Roles = "Admin,FarmManager")]
+    public async Task<IActionResult> UpdatePartial(int id, Location updatedLocation)
     {
-        if (id != updatedLocation.Id)
-            return BadRequest("ID mismatch");
+        if (updatedLocation == null)
+            return BadRequest("Location data cannot be null");
 
         var locationInDb = await _context.Locations.FindAsync(id);
-
         if (locationInDb == null)
             return NotFound();
 
-        locationInDb.FullAddress = updatedLocation.FullAddress;
-        locationInDb.Farms = updatedLocation.Farms;
+        // Update only the fields that are provided
+        if (updatedLocation.DistrictId.HasValue && updatedLocation.DistrictId != locationInDb.DistrictId)
+            locationInDb.DistrictId = updatedLocation.DistrictId.Value;
+
+        if (!string.IsNullOrEmpty(updatedLocation.FullAddress) && updatedLocation.FullAddress != locationInDb.FullAddress)
+            locationInDb.FullAddress = updatedLocation.FullAddress;
 
         _context.Entry(locationInDb).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Conflict("The location was modified by another user.");
+        }
 
         return Ok(locationInDb);
     }
+
+
 
     // DELETE
     [HttpDelete("{id:int}")]

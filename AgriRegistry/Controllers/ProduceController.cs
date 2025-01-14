@@ -48,15 +48,16 @@ public class ProduceController : ControllerBase
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        // Filter based on roles
         var produces = await _context.Produces
-            .Include(p => p.ProduceType.ProduceCategory)
+            .Include(p => p.ProduceType)
+                .ThenInclude(pt => pt.ProduceCategory)
             .Include(p => p.FarmManager)
             .Where(p => User.IsInRole("Admin") || p.FarmManagerId == userId)
             .ToListAsync();
 
         return Ok(produces);
     }
-
 
     // Read by ID
     [HttpGet("{id:int}")]
@@ -66,11 +67,6 @@ public class ProduceController : ControllerBase
         var produce = await _context.Produces
             .Include(p => p.ProduceType) // Include related ProduceType data
             .FirstOrDefaultAsync(p => p.Id == id);
-
-        if (produce == null)
-        {
-            return NotFound($"Produce with ID {id} not found.");
-        }
 
         return Ok(produce);
     }

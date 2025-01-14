@@ -8,7 +8,7 @@ import {
 } from "../../components/ui/breadcrumb";
 
 interface BreadcrumbItemProps {
-  name: string;
+  name: string | undefined;
   url: string;
 }
 

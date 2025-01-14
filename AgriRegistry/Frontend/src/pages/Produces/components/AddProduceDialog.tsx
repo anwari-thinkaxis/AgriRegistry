@@ -50,7 +50,7 @@ const formSchema = z.object({
     .nullable(),
 });
 
-const AddProduceDialog = ({ loadProduces }: { loadProduces: any }) => {
+const AddProduceDialog = () => {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -82,7 +82,7 @@ const AddProduceDialog = ({ loadProduces }: { loadProduces: any }) => {
       if (response.status === 200 || response.status === 201) {
         // navigate("/produces");
         setOpen(false);
-        loadProduces();
+        window.location.reload();
       } else {
         throw new Error("Unexpected response from the server");
       }
@@ -96,9 +96,11 @@ const AddProduceDialog = ({ loadProduces }: { loadProduces: any }) => {
   return (
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger className="px-2 py-1 flex gap-2 items-center justify-center shadow rounded-3xl bg-emerald-500 text-white">
-          <PlusIcon />
-          Add Produce
+        <DialogTrigger asChild>
+          <Button className="flex" size={"sm"}>
+            <PlusIcon />
+            Add Produce
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

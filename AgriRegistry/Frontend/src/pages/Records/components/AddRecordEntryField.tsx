@@ -5,6 +5,7 @@ import { api } from "../../../api/api";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -36,7 +37,7 @@ import AddProduceDialog from "../../Produces/components/AddProduceDialog";
 const formSchema = z.object({
   produceId: z.number().min(1, "Please select a valid produce"),
   recordId: z.number(),
-  quantity: z
+  quantity: z.coerce
     .number()
     .min(0.1, "Quantity must be greater than 0")
     .refine((val) => /^\d+(\.\d{1,2})?$/.test(val.toString()), {
@@ -57,15 +58,6 @@ const AddRecordEntryField = ({
     loadProduces();
   }, []);
 
-  const groupedProduce = produces.reduce((groups, produce) => {
-    const category = produce.produceType.produceCategory.name;
-    if (!groups[category]) {
-      groups[category] = [];
-    }
-    groups[category].push(produce);
-    return groups;
-  }, {} as Record<string, Produce[]>);
-
   const loadProduces = async () => {
     try {
       const data = await fetchProduces();
@@ -75,12 +67,21 @@ const AddRecordEntryField = ({
     }
   };
 
+  const groupedProduce = produces.reduce((groups, produce) => {
+    const category = produce.produceType.produceCategory.name;
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+    groups[category].push(produce);
+    return groups;
+  }, {} as Record<string, Produce[]>);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      produceId: 1,
+      produceId: 0,
       recordId: id,
-      quantity: 0,
+      quantity: 0.0,
     },
   });
 
@@ -95,7 +96,7 @@ const AddRecordEntryField = ({
 
       if (response.status === 200 || response.status === 201) {
         console.log("Entry created successfully:", response.data);
-        form.setValue("quantity", 0);
+        form.setValue("quantity", 0.0);
         loadRecord();
       } else {
         throw new Error("Unexpected response from the server");
@@ -125,7 +126,9 @@ const AddRecordEntryField = ({
                     <FormLabel>Produce</FormLabel>
                     <FormControl>
                       <Select
-                        value={field.value?.toString()}
+                        value={
+                          field.value == 0 ? undefined : field.value?.toString()
+                        }
                         onValueChange={(value) =>
                           field.onChange(parseInt(value))
                         }
@@ -147,14 +150,6 @@ const AddRecordEntryField = ({
                               ))}
                             </SelectGroup>
                           ))}
-                          <SelectGroup>
-                            <SelectLabel className="flex gap-2 w-full justify-between items-center">
-                              <p className="text-sm text-muted-foreground">
-                                Produce not yet added?
-                              </p>
-                              <AddProduceDialog loadProduces={loadProduces()} />
-                            </SelectLabel>
-                          </SelectGroup>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -162,6 +157,12 @@ const AddRecordEntryField = ({
                   </FormItem>
                 )}
               />
+              <div className="flex gap-2 items-center">
+                <p className="text-sm text-muted-foreground">
+                  Could not find your produce?
+                </p>
+                <AddProduceDialog />
+              </div>
               <FormField
                 control={form.control}
                 name="quantity"
@@ -174,14 +175,12 @@ const AddRecordEntryField = ({
                           type="number"
                           placeholder="Enter quantity (tonnes)"
                           {...field}
-                          onChange={(e) => {
-                            field.onChange(Number(e.target.value) || "");
-                          }}
-                          className="w-24 mr-2" // Adjust the width and margin here
+                          className="w-36 mr-2" // Adjust the width and margin here
                         />
                         <span className="text-sm text-gray-600">tonnes</span>
                       </div>
                     </FormControl>
+                    <FormDescription>Up to 2 decimal places</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

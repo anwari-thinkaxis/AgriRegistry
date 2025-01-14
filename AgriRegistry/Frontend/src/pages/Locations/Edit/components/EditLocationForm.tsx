@@ -1,67 +1,92 @@
-import { useState, useEffect } from 'react';
-import { updateLocation } from '../../../../api/locationApi';
-import { Location } from '../../../../types/TResponse';
+import { UseFormReturn } from "react-hook-form";
+import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../../components/ui/form";
+import { Input } from "../../../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../components/ui/select";
+import { DISTRICTS } from "../../../../utils/constants/DISTRICTS";
+import { Textarea } from "../../../../components/ui/textarea";
 
-type EditLocationFormProps = {
-    location: Location; // The location to be edited
-    onUpdateSuccess?: () => void; // Callback for when the update is successful
-};
-
-const EditLocationForm = ({ location, onUpdateSuccess }: EditLocationFormProps) => {
-    const [locationName, setLocationName] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
-
-    useEffect(() => {
-        if (location) {
-            setLocationName(location.fullAddress || ''); // Pre-fill the form with the location's name
-        }
-    }, [location]);
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (!locationName.trim()) {
-            setMessage('Please enter a location name.');
-            return;
-        }
-
-        try {
-            const updatedLocation: Location = {
-                ...location,
-                fullAddress: locationName,
-            };
-
-            await updateLocation(location.id, updatedLocation);
-            setMessage('Location updated successfully!');
-
-            if (onUpdateSuccess) {
-                onUpdateSuccess(); // Trigger callback if provided
-            }
-        } catch (error) {
-            setMessage('Error updating location.');
-            console.error(error);
-        }
-    };
-
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="locationName">Location Name:</label>
-                    <input
-                        type="text"
-                        id="locationName"
-                        value={locationName}
-                        onChange={(e) => setLocationName(e.target.value)}
-                        placeholder="Enter location name"
-                        required
-                    />
-                </div>
-                <button type="submit">Save</button>
-            </form>
-            {message && <p>{message}</p>}
-        </div>
-    );
+const EditLocationForm = ({
+  form,
+}: {
+  form: UseFormReturn<{
+    id: number;
+    fullAddress: string;
+    districtId: number;
+  }>;
+}) => {
+  return (
+    <Card className="flex flex-col md:flex-row mx-auto w-full shadow px-4 py-9 rounded-xl">
+      <CardContent className="flex-1 pb-3 md:pb-0">
+        <CardTitle>General</CardTitle>
+      </CardContent>
+      <CardContent className="flex flex-1 flex-col gap-6 ">
+        <FormField
+          control={form.control}
+          name="fullAddress"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location Address</FormLabel>
+              <FormControl>
+                <Textarea
+                  className="h-20"
+                  placeholder="Enter Postal address"
+                  {...field}
+                  value={form.getValues("fullAddress")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* District Dropdown */}
+        <FormField
+          control={form.control}
+          name="districtId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>District</FormLabel>
+              <FormControl className="bg-white">
+                <Select
+                  value={field.value?.toString()} // Use `field.value` for the value
+                  onValueChange={(value) => field.onChange(parseInt(value))} // Use `field.onChange` for updating the value
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select District" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Districts</SelectLabel>
+                      {Object.entries(DISTRICTS).map(([id, name]) => (
+                        <SelectItem key={id} value={id}>
+                          {name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  );
 };
 
 export default EditLocationForm;

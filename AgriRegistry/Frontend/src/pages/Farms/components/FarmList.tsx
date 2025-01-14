@@ -10,6 +10,7 @@ import { ChevronRight, PlusIcon, Tractor } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { fetchFarms } from "../../../api/farmApi";
 import { useNavigate } from "react-router";
+import { LocationDropdown } from "./LocationDropdown";
 
 const FarmList = () => {
   const navigation = useNavigate();
@@ -42,7 +43,10 @@ const FarmList = () => {
           locations.map((location: Location) => (
             <Card key={location.id} className="flex flex-col gap-4 px-10 py-10">
               <div>
-                <p className="text-sm text-muted-foreground">Location</p>
+                <div className="flex gap-2 items-center justify-between">
+                  <p className="text-sm text-muted-foreground">Location</p>
+                  <LocationDropdown id={location.id} />
+                </div>
                 <p>{location.fullAddress}</p>
               </div>
               <div>

@@ -17,13 +17,12 @@ const Page = () => {
   const [record, setRecord] = useState<Record | null>(null);
 
   useEffect(() => {
-    if (id) loadRecord();
-  }, [id]);
+    loadRecord();
+  }, []);
 
   const loadRecord = async () => {
     try {
       const data = await fetchRecordById(Number(id));
-      console.log(data);
       setRecord(data);
     } catch (error) {
       console.error("Error fetching record:", error);
@@ -34,8 +33,8 @@ const Page = () => {
     <div className="flex flex-col mx-auto min-h-screen w-full max-w-4xl py-14 px-12 gap-6">
       <CustomBreadcrumb
         items={[
-          { name: "Farms", url: "/farms" },
-          { name: record?.farmName || "Farm", url: `/farms/${record?.farmId}` },
+          { name: "My Farms", url: "/farms" },
+          { name: record?.farm.name, url: `/farms/${record?.farmId}` },
           { name: `Record #${id}`, url: `/records/${id}` },
         ]}
       />

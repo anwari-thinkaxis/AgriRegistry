@@ -50,8 +50,8 @@ const Page = () => {
     <div className="flex flex-col mx-auto min-h-screen w-full max-w-4xl py-14 px-12 gap-6">
       <CustomBreadcrumb
         items={[
-          { name: "Farms", url: "/farms" },
-          { name: "Stardew Valley", url: "/farms/1" },
+          { name: "My Farms", url: "/farms" },
+          { name: farm?.name, url: `/farms/${farm?.id}` },
         ]}
       />
       <h6>{farm?.name}</h6>

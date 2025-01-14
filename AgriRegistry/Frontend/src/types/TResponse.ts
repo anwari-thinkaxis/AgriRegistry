@@ -44,7 +44,7 @@ export interface RecordEntry {
 export interface Record {
   id: number;
   farmId: number;
-  farmName: string;
+  farm: Farm;
   dateSubmitted: string;
   recordEntries?: RecordEntry[];
 }

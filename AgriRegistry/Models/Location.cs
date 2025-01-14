@@ -1,18 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AgriRegistry.Models
+namespace AgriRegistry.Models;
+public class Location
 {
-    public class Location
-    {
-        public int Id { get; set; }
-        public string FarmManagerId { get; set; } = null!; 
+    public int Id { get; set; }
+    public string FarmManagerId { get; set; } = null!;
 
-        // Marking these properties as required
-        public required string FullAddress { get; set; }
-        public required int DistrictId { get; set; }
+    // Make FullAddress and DistrictId optional for partial updates
+    public string? FullAddress { get; set; } // Nullable
+    public int? DistrictId { get; set; } // Nullable
 
-        // Optional navigation property, make it nullable
-        public District? District { get; set; }
-        public List<Farm> Farms { get; set; } = new List<Farm>();
-    }
+    // Optional navigation property, make it nullable
+    public District? District { get; set; }
+    public List<Farm> Farms { get; set; } = new List<Farm>();
 }

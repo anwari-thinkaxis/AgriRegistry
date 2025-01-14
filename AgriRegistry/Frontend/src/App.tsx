@@ -6,6 +6,7 @@ import ProducePage from "./pages/Produces/Page";
 import FarmPage from "./pages/Farms/Page";
 import CreateFarmPage from "./pages/Farms/Create/Page";
 import FarmDetailsPage from "./pages/Farms/[id]/Page";
+import FarmEditPage from "./pages/Farms/[id]/Edit/Page";
 import LocationPage from "./pages/Locations/Page";
 import CreateLocation from "./pages/Locations/Create/Page";
 import EditLocationPage from "./pages/Locations/Edit/Page";
@@ -37,10 +38,14 @@ function App() {
               <Route path="/farms" element={<FarmPage />} />
               <Route path="/farms/create" element={<CreateFarmPage />} />
               <Route path="/farms/:id" element={<FarmDetailsPage />} />
+              <Route path="/farms/:id/edit" element={<FarmEditPage />} />
 
               <Route path="/locations" element={<LocationPage />} />
               <Route path="/locations/create" element={<CreateLocation />} />
-              <Route path="/location/edit/:id" element={<EditLocationPage />} />
+              <Route
+                path="/locations/:id/edit"
+                element={<EditLocationPage />}
+              />
             </Route>
 
             <Route path="/HelloWorld" element={<HelloWorldPage />} />

@@ -58,20 +58,20 @@ public class RecordController : ControllerBase
     [Authorize(Roles = "Admin,FarmManager")]
     public async Task<IActionResult> GetById(int id)
     {
-        // Fetch the record including related entities
         var record = await _context.Records
             .Include(r => r.Farm) 
             .Include(r => r.RecordEntries) 
-                .ThenInclude(re => re.Produce)
+                .ThenInclude(re => re.Produce) 
             .FirstOrDefaultAsync(r => r.Id == id);
 
         if (record == null)
         {
-            return NotFound($"Report with ID {id} not found.");
+            return NotFound($"Record with ID {id} not found.");
         }
 
-        return Ok(record); 
+        return Ok(record);
     }
+
 
 
 }
