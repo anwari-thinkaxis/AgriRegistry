@@ -47,7 +47,7 @@ const Page = () => {
           <CardTitle>X Produce</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <AddProduceDialog loadProduces={loadProduces} />
+          <AddProduceDialog />
           <div className="flex flex-col gap-3">
             {produces?.map((produce) => (
               <Card

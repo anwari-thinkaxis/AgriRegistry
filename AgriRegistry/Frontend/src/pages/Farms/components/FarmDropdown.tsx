@@ -10,7 +10,7 @@ import {
 } from "../../../components/ui/dropdown-menu";
 import { useNavigate } from "react-router";
 
-export function LocationDropdown({ id }: { id: number }) {
+export function FarmDropdown({ id }: { id?: number }) {
   const navigate = useNavigate();
   return (
     <DropdownMenu>
@@ -23,13 +23,13 @@ export function LocationDropdown({ id }: { id: number }) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel>Location</DropdownMenuLabel>
+        <DropdownMenuLabel>Farm</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
             className="cursor-pointer"
             onClick={() => {
-              navigate(`/locations/${id}/edit`);
+              navigate(`/farms/${id}/edit`);
             }}
           >
             Edit

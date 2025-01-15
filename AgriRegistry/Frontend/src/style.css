@@ -1050,6 +1050,14 @@ span {
   height: 100svh;
 }
 
+.h-\[125px\] {
+  height: 125px;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
 .max-h-96 {
   max-height: 24rem;
 }
@@ -1179,6 +1187,10 @@ span {
   width: max-content;
 }
 
+.w-\[250px\] {
+  width: 250px;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -1214,6 +1226,10 @@ span {
 
 .flex-1 {
   flex: 1 1 0%;
+}
+
+.flex-none {
+  flex: none;
 }
 
 .shrink-0 {
@@ -2207,6 +2223,11 @@ span {
 
 .hover\:bg-sidebar-accent:hover {
   background-color: hsl(var(--sidebar-accent));
+}
+
+.hover\:bg-slate-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:text-accent-foreground:hover {

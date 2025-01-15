@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { authApi } from "../../../api/api";
 import { Button } from "../../../components/ui/button";
-import { Label } from "@radix-ui/react-label";
 import { Input } from "../../../components/ui/input";
 import AuthStore from "../../../utils/stores/AuthStore";
+import { Label } from "../../../components/ui/label";
 
 const Page = () => {
   const [email, setEmail] = useState("");

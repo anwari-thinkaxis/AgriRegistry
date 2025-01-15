@@ -27,6 +27,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../../../components/ui/accordion";
+import { FarmDropdown } from "../components/FarmDropdown";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -54,7 +55,13 @@ const Page = () => {
           { name: farm?.name, url: `/farms/${farm?.id}` },
         ]}
       />
-      <h6>{farm?.name}</h6>
+      <div>
+        <div className="flex items-center justify-between">
+          <h6>{farm?.name}</h6>
+          <FarmDropdown id={farm?.id} />
+        </div>
+        <p>{farm?.postalAddress}</p>
+      </div>
       <Card className="flex flex-col">
         <CardHeader>
           <Dialog>
@@ -82,29 +89,35 @@ const Page = () => {
         <CardContent>
           <Accordion type="single" collapsible>
             {farm?.records?.map((record: Record, index: number) => (
-              <AccordionItem value={`item-${index + 1}`}>
-                <AccordionTrigger>
-                  <div className="w-full flex justify-between pl-8">
-                    <div>
-                      <h6 className="text-sm text-muted-foreground">
-                        Record #{record.id}
-                      </h6>
-                      <h6>
-                        {new Date(record.dateSubmitted).toLocaleDateString()} -{" "}
-                        {record.recordEntries?.length || 0} Entries
-                      </h6>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => navigate(`/records/${record.id}`)}
-                      >
-                        View Record
-                      </Button>
-                    </div>
+              <AccordionItem value={`item-${index + 1}`} key={index}>
+                <div className="flex items-center">
+                  <div className="flex-1">
+                    <AccordionTrigger>
+                      <div className="w-full flex justify-between pl-8">
+                        <div>
+                          <h6 className="text-sm text-muted-foreground">
+                            Record #{record.id}
+                          </h6>
+                          <h6>
+                            {new Date(
+                              record.dateSubmitted
+                            ).toLocaleDateString()}{" "}
+                            - {record.recordEntries?.length || 0} Entries
+                          </h6>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
                   </div>
-                </AccordionTrigger>
+                  <div className="flex-none">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => navigate(`/records/${record.id}`)}
+                    >
+                      View Record Details
+                    </Button>
+                  </div>
+                </div>
                 <AccordionContent className="flex flex-col gap-4">
                   {record.recordEntries?.map((recordEntry: RecordEntry) => (
                     <Card

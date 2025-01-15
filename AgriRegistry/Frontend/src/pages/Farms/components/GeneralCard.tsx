@@ -15,6 +15,7 @@ import AddFarmStore from "../../../utils/stores/AddFarmStore";
 
 const GeneralCard = ({
   form,
+  disableLocationAddress,
 }: {
   form: UseFormReturn<{
     farmName: string;
@@ -23,6 +24,7 @@ const GeneralCard = ({
     locationId: number;
     locationAddress?: string;
   }>;
+  disableLocationAddress?: boolean; // Updated to accept both true and false
 }) => {
   return (
     <Card className="flex flex-col md:flex-row mx-auto w-full shadow px-4 py-9 rounded-xl">
@@ -75,18 +77,20 @@ const GeneralCard = ({
             <FormItem>
               <div className="flex justify-between items-center">
                 <FormLabel>Postal Address</FormLabel>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    form.setValue(
-                      "postalAddress",
-                      AddFarmStore.selectedLocation?.fullAddress
-                    );
-                  }}
-                >
-                  Use location address
-                </Button>
+                {!disableLocationAddress && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      form.setValue(
+                        "postalAddress",
+                        AddFarmStore.selectedLocation?.fullAddress
+                      );
+                    }}
+                  >
+                    Use location address
+                  </Button>
+                )}
               </div>
               <FormControl>
                 <Textarea

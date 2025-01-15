@@ -1,12 +1,16 @@
 import { UseFormReturn } from "react-hook-form";
-import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardTitle,
+} from "../../../../../components/ui/card";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../../components/ui/form";
+} from "../../../../../components/ui/form";
 import {
   Select,
   SelectContent,
@@ -15,11 +19,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../../../../components/ui/select";
-import { DISTRICTS } from "../../../../utils/constants/DISTRICTS";
-import { Textarea } from "../../../../components/ui/textarea";
+} from "../../../../../components/ui/select";
+import { DISTRICTS } from "../../../../../utils/constants/DISTRICTS";
+import { Textarea } from "../../../../../components/ui/textarea";
 
-const EditLocationForm = ({
+const EditFarmForm = ({
   form,
 }: {
   form: UseFormReturn<{
@@ -88,4 +92,4 @@ const EditLocationForm = ({
   );
 };
 
-export default EditLocationForm;
+export default EditFarmForm;

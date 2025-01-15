@@ -43,11 +43,15 @@ const FarmList = () => {
           locations.map((location: Location) => (
             <Card key={location.id} className="flex flex-col gap-4 px-10 py-10">
               <div>
-                <div className="flex gap-2 items-center justify-between">
+                <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">Location</p>
                   <LocationDropdown id={location.id} />
                 </div>
-                <p>{location.fullAddress}</p>
+                <div>
+                  <p>
+                    {location.fullAddress}, {location.districtName}
+                  </p>
+                </div>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground pb-1">Farms</p>
@@ -58,9 +62,7 @@ const FarmList = () => {
                       className="flex justify-between items-center px-6"
                     >
                       <div className="flex items-center">
-                        <div className="flex items-center justify-center w-8 h-8">
-                          <Tractor className="w-full h-full" />
-                        </div>
+                        <Tractor size={28} />
                         <CardHeader>
                           <CardTitle>{farm.name}</CardTitle>
                           <CardDescription>
@@ -70,6 +72,7 @@ const FarmList = () => {
                       </div>
                       <Button
                         type="button"
+                        variant={"outline"}
                         onClick={() => navigation(`/farms/${farm.id}`)}
                         className="flex items-center justify-center w-10 h-10 rounded-full p-0"
                       >
