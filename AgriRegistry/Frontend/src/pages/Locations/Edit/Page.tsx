@@ -126,7 +126,7 @@ const Page = () => {
       >
         <h5>Edit Location</h5>
         <Separator />
-        <EditLocationForm form={form} />
+        <EditLocationForm form={form} loading={loading} />
         <div className="flex flex-row gap-6 justify-center">
           <Dialog>
             <DialogTrigger>

@@ -18,15 +18,18 @@ import {
 } from "../../../../components/ui/select";
 import { DISTRICTS } from "../../../../utils/constants/DISTRICTS";
 import { Textarea } from "../../../../components/ui/textarea";
+import { Skeleton } from "../../../../components/ui/skeleton";
 
 const EditLocationForm = ({
   form,
+  loading,
 }: {
   form: UseFormReturn<{
     id: number;
     fullAddress: string;
     districtId: number;
   }>;
+  loading: boolean;
 }) => {
   return (
     <Card className="flex flex-col md:flex-row mx-auto w-full shadow px-4 py-9 rounded-xl">
@@ -41,12 +44,16 @@ const EditLocationForm = ({
             <FormItem>
               <FormLabel>Location Address</FormLabel>
               <FormControl>
-                <Textarea
-                  className="h-20"
-                  placeholder="Enter Postal address"
-                  {...field}
-                  value={form.getValues("fullAddress")}
-                />
+                {loading ? (
+                  <Skeleton className="h-20 w-[250px]" />
+                ) : (
+                  <Textarea
+                    className="h-20"
+                    placeholder="Enter Postal address"
+                    {...field}
+                    value={form.getValues("fullAddress")}
+                  />
+                )}
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -59,25 +66,29 @@ const EditLocationForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>District</FormLabel>
-              <FormControl className="bg-white">
-                <Select
-                  value={field.value?.toString()} // Use `field.value` for the value
-                  onValueChange={(value) => field.onChange(parseInt(value))} // Use `field.onChange` for updating the value
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select District" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Districts</SelectLabel>
-                      {Object.entries(DISTRICTS).map(([id, name]) => (
-                        <SelectItem key={id} value={id}>
-                          {name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+              <FormControl>
+                {loading ? (
+                  <Skeleton className="h-8 w-[250px]" />
+                ) : (
+                  <Select
+                    value={field.value?.toString()} // Use `field.value` for the value
+                    onValueChange={(value) => field.onChange(parseInt(value))} // Use `field.onChange` for updating the value
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select District" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Districts</SelectLabel>
+                        {Object.entries(DISTRICTS).map(([id, name]) => (
+                          <SelectItem key={id} value={id}>
+                            {name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
               </FormControl>
               <FormMessage />
             </FormItem>

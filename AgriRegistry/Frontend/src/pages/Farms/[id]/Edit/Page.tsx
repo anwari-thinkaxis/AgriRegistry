@@ -43,7 +43,6 @@ const Page = () => {
   const { id } = useParams(); // Ensures type safety for the parameter
   const [farm, setFarm] = useState<Farm | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,13 +75,12 @@ const Page = () => {
       const farm = await fetchFarmById(Number(farmId)); // Assuming fetchLocations returns a Location[]
 
       if (!farm) {
-        setError("farm not found.");
+        console.log("farm not found.");
       } else {
         setFarm(farm);
       }
     } catch (err) {
       console.error("Error fetching location:", err);
-      setError("Failed to fetch location data.");
     } finally {
       setLoading(false);
     }
@@ -116,7 +114,6 @@ const Page = () => {
         throw new Error("Unexpected response from the server");
       }
     } catch (err: any) {
-      setError(err.response?.data);
       console.error(
         "Farm edit submission failed:",
         err.response?.data || err.message
