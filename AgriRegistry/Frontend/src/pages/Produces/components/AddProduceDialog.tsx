@@ -34,7 +34,8 @@ import {
 } from "../../../components/ui/select";
 import AuthStore from "../../../utils/stores/AuthStore";
 import { PlusIcon } from "lucide-react";
-import { PRODUCETYPES } from "../../../utils/constants/PRODUCETYPES";
+import { PRODUCETYPES } from "../../../utils/constants/produceTypes";
+
 
 const formSchema = z.object({
   produceName: z
